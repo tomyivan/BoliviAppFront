@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@layer components {
+  .layout {
+    @apply flex h-screen relative bg-gray-50
+  }
+  .main__layout {
+    @apply h-screen w-full flex
+  }
+  .sideBar {
+    @apply text-white  relative md:left-0 h-screen flex flex-col bg-gray-700  max-w-[200px] w-full border-r border-gray-300 transition-all text-xs
+  }
+  .sideBar__title{
+    @apply p-4 h-[60px] font-bold uppercase text-2xl border-b bg-gray-700 flex justify-start items-center gap-4
+  }
+  .sideBar__content {
+    @apply font-semibold pt-1 
+  }
+  .sideBar__item {
+    @apply py-2 px-4 flex items-center gap-4 hover:bg-gray-600 cursor-pointer hover:border-l-2 
+  }
+  .sideBar__item__group {
+    @apply py-3 text-left flex gap-4 hover:bg-gray-600 relative w-full px-4 cursor-pointer hover:border-l-2
+  }
+  .sideBar-show {
+    @apply left-0 transition-all
+  }
+  .sideBar__item__group__option{
+    @apply absolute left-full top-0 z-10 hidden w-48 mt-0  bg-gray-700  group-hover:block
+  }
+  .sideBar__compress {
+    @apply  text-white  relative md:left-0 h-screen flex flex-col bg-gray-700 max-w-[60px] w-full border-r border-gray-300 transition-all text-xs
+  }
+  .navBar{
+    @apply bg-gray-700 h-[60px] w-full p-4  flex justify-between items-center
+  }
+  .navBar__content{
+    @apply flex justify-between items-center uppercase font-semibold text-gray-100 gap-2
+  }
+  .navBar__item{
+    @apply hover:cursor-pointer hover:bg-gray-500 p-2 rounded-lg bg-gray-600
+  }
+  .content{
+    @apply w-full p-2 bg-gray-50
+  }
+  .btn {
+    @apply py-1.5 px-3  rounded-md relative overflow-hidden shadow-md font-semibold
+  }
+  .is-invalid {
+    @apply !border-red-500;
+  } 
+  .btn-primary {
+    @apply bg-blue-500 text-gray-100 hover:bg-blue-400
+  }
+  .btn-secondary {
+    @apply bg-gray-500 text-gray-100 hover:bg-gray-400
+  }
+  .btn-danger {
+    @apply bg-red-500 text-gray-100 hover:bg-red-400
+  }
+  .btn-warning {
+    @apply bg-yellow-500 text-gray-100 hover:bg-yellow-400
+  }
+  .btn-success {
+    @apply bg-green-500 text-gray-100 hover:bg-green-400
+  }
+  .btn-info {
+    @apply bg-cyan-500 text-gray-100 hover:bg-cyan-400
+  }
+  .btn-outline-primary {
+    @apply border border-blue-500 text-blue-500 hover:shadow-blue-500 
+  }
+  .btn-outline-secondary {
+    @apply border border-gray-500 text-gray-500 hover:shadow-gray-500
+  } 
+  .btn-outline-success {
+    @apply border border-green-500 text-green-500 hover:shadow-green-500
+  } 
+  .btn-outline-danger {
+    @apply border border-red-500 text-red-500 hover:shadow-red-500
+  } 
+  .btn-outline-warning {
+    @apply border border-yellow-500 text-yellow-500 hover:shadow-yellow-500
+  } 
+  .btn-outline-info {
+    @apply border border-cyan-500 text-cyan-500 hover:shadow-cyan-500
+  }
+  .modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black 
+  }
+  .modal__content {
+    @apply bg-gray-50 px-4  max-h-[80%] overflow-visible rounded-lg 
+  }
+  .modal__header {
+    @apply flex justify-between items-center sticky top-0 p-2 bg-gray-50 z-10 border-b border-gray-300 pb-2 text-gray-600
+  }
+  .modal__body {
+    @apply p-4 overflow-auto max-h-[550px] 
+  }  
+  .ceilSpreadSheetSelect {
+    @apply cursor-pointer w-full h-full p-2 hover:bg-gray-100
+  }
+  .badge {
+    @apply px-2 py-0.5 text-xs font-medium me-2 rounded
+  }
+  .badge-success {
+    @apply bg-green-100 text-green-800
+  } 
+  .badge-danger {
+    @apply bg-red-100 text-red-800
+  }
+  .form-row {
+    @apply flex md:flex-row md:gap-2 flex-col
+  }
+} 
