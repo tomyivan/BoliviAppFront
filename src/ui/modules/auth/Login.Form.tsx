@@ -1,22 +1,31 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { InputLabel } from "../../shared"
-import { LoginForm } from "../../../domain/models";
+import { LoginForm } from "../../../domain";
 import { Form } from "../../components";
 // import { handleSubmit } from "./Actions"
 import { useNavigate } from "react-router-dom"
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { useAuth } from "../../hooks";
 // import useAuthStore from "../../store/Auth.store"
 interface FormLoginProps {
-    handleOptionSingUp?: () => void
+    handleOptionSingUp?: () => void,
+    handleSingGoogle: () => void
 }
 export const  FormLogin: React.FC<FormLoginProps> = ({
-    handleOptionSingUp
+    handleOptionSingUp,
+    handleSingGoogle
 }) => {
     const { register, formState: {errors}, handleSubmit } = useForm<LoginForm>();   
+    const { login } = useAuth();
     const navigate = useNavigate();
     // const addAuth  = useAuthStore((state) => state.addAuth);
     const onSubmit: SubmitHandler<LoginForm> = async (FormData) => {
-        console.log(FormData);
+        const response = await login(FormData);
+        console.log(response)
+        // if(response) {
+        //     // addAuth(response)
+        //     navigate('/dashboard')
+        // }
     }
     return (
         <div className={`flex justify-center items-center h-[100%]`}>
@@ -47,12 +56,14 @@ export const  FormLogin: React.FC<FormLoginProps> = ({
                 <div className="mt-2 flex flex-col items-center gap-2">
                     <p className="text-gray-700 text-center">O Inicia session con</p>
                     <ul className="flex flex-row justify-center gap-2">
-                        <li className="bg-red-600 p-2 rounded-full text-gray-100 cursor-pointer hover:bg-red-700 transition duration-300">
+                        <li className="bg-red-600 p-2 rounded-full text-gray-100 cursor-pointer hover:bg-red-700 transition duration-300"
+                            onClick={handleSingGoogle}
+                        >
                             <FaGoogle size={20} />
                         </li>
-                        <li className="bg-blue-600 p-2 rounded-full text-gray-100 cursor-pointer hover:bg-blue-800 transition duration-300">
+                        {/* <li className="bg-blue-600 p-2 rounded-full text-gray-100 cursor-pointer hover:bg-blue-800 transition duration-300">
                             <FaFacebook size={20} />
-                        </li>
+                        </li> */}
                     </ul>
                     <p className="text-gray-700 font-bold">¿No tienes cuenta? <span className="text-red-700 cursor-pointer" onClick={handleOptionSingUp}>Registrate</span></p>
                 </div>

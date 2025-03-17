@@ -1,0 +1,1 @@
+export { AuthApiAdapter } from "./adapter/authApi.adapter";

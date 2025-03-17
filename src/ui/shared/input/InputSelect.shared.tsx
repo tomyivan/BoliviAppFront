@@ -1,6 +1,6 @@
 import { Controller, Control, FieldValues, RegisterOptions } from "react-hook-form"
 import Select from "react-select"
-import { List } from "../../../domain/models"
+import { List } from "../../../domain"
 interface InputSelectProps<T extends FieldValues> {
     control: Control<any>,
     listOptions: List[]

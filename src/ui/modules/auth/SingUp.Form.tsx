@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SingUpForm } from "../../../domain/models";
+import { SingUpForm } from "../../../domain";
 import { Form } from "../../components"
 import { InputLabel, InputSelect } from "../../shared";
 import ReCAPTCHA from "react-google-recaptcha";

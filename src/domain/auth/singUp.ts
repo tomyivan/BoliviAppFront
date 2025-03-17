@@ -11,3 +11,14 @@ export interface SingUpForm{
     gender: List;
     city: List
 }
+
+export interface Register {
+    name : string, 
+    lastname: string,
+    email: string,
+    gender: number,
+    phoneNumber: string,
+    city: number,
+    nickname: string,
+    pass: string
+}
