@@ -1,4 +1,6 @@
+import React from "react";
 import { UseFormRegister, FieldValues, RegisterOptions } from "react-hook-form";
+import { FaEye, FaEyeSlash  } from "react-icons/fa";
 
 interface InputProps<T extends FieldValues> {
   label: string;
@@ -25,9 +27,9 @@ export const InputLabel = <T extends FieldValues>({
   step= false,
   min
 }: InputProps<T> ) => {
-
+  const [ showPassword, setShowPassword ] = React.useState<boolean>(false);
   return (
-    <div className="mb-3 w-full">
+    <div className="mb-3 w-full ">
       <label htmlFor={String(name)} className={`block text-sm font-medium text-gray-700 mb-1.5
           ${
             errors[name] ? 'text-red-600' : ''
@@ -35,17 +37,29 @@ export const InputLabel = <T extends FieldValues>({
         `}>
         {label}
       </label>
-      <input
-        id={String(name)}
-        type={type}
-        placeholder={placeholder}
-        {...register(name as any, options as any)} // 👈 Forzamos tipo para evitar conflicto
-        className={`border p-1 w-full rounded text-gray-700 border-gray-300 h-[35px] ${ errors[name] ? 'border-red-600' : ''}`}
-        autoComplete="off"
-        defaultValue={defaultValue}
-        step={type === "number" && step ? "0.01" : undefined}
-        min={min}
-      />
+      <div className="flex">
+        <input
+          id={String(name)}
+          type={type === "password" ? (showPassword ? "text" : "password") : type}
+          placeholder={placeholder}
+          {...register(name as any, options as any)} // 👈 Forzamos tipo para evitar conflicto
+          className={`border p-1 w-full rounded text-gray-700 border-gray-300 h-[35px] ${ errors[name] ? 'border-red-600' : ''}`}
+          autoComplete="off"
+          defaultValue={defaultValue}
+          step={type === "number" && step ? "0.01" : undefined}
+          min={min}
+        />
+        {type === "password" && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="p-1 bg-gray-200 text-gray-700 rounded-r cursor-pointer "
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+            {/* {showPassword ? "Ocultar" : "Mostrar"} */}
+          </button>
+        )}
+      </div>
         {errors[name] && <small className="text-red-600 font-semibold">{ errors[name]?.message === ''? `Este campo es requerido` : errors[name]?.message}</small>}
     </div>
   );

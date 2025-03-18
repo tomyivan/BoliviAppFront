@@ -1,7 +1,9 @@
 export interface LoginForm {
-    nickname: string;
-    pass: string;
+    nickname:   string;
+    pass:       string;
 }
+
+
 
 export interface CredentialDTO {
     token:       string;

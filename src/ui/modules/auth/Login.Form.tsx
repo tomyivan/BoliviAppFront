@@ -22,14 +22,10 @@ export const  FormLogin: React.FC<FormLoginProps> = ({
     const onSubmit: SubmitHandler<LoginForm> = async (FormData) => {
         const response = await login(FormData);
         console.log(response)
-        // if(response) {
-        //     // addAuth(response)
-        //     navigate('/dashboard')
-        // }
     }
     return (
         <div className={`flex justify-center items-center h-[100%]`}>
-            <div className="w-2/3 ">
+            <div className="w-2/4 ">
                 <Form onSubmit={handleSubmit(onSubmit)} 
                     labelSend="Ingresar"
                 >              

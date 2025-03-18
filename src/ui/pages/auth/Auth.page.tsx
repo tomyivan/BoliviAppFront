@@ -54,8 +54,8 @@ export const AuthPage = () => {
     return (
         <div className="bg-gray-100">
             <div className="flex justify-center items-center w-[100%] h-[100vh]">
-                <div className="flex justify-center items-center ">                                     
-                        <div className="flex flex-col md:flex-row w-[350px] md:w-[950px] h-[600px] bg-white rounded-lg shadow-xl">
+                <div className="flex justify-center items-center w-[100%] h-[100%] ">                                     
+                        <div className="flex flex-col md:flex-row w-[350px] md:w-[90%] h-[90%] bg-white rounded-lg shadow-xl">
                             <div className="md:w-1/2 md:h-full h-1/4 bg-center bg-cover bg-no-repeat relative rounded-l-lg" style={{
                                 backgroundImage: `url(./TAPA.webp)`,
                                 // background: `red`

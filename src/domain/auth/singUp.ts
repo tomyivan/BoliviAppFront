@@ -9,21 +9,23 @@ export interface SingUpForm{
     pass: string;
     confirmPass: string;
     gender: List;
-    city: List
+    city: List;
+    code: string;
 }
 
 export interface Register {
     name : string, 
     lastname: string,
+    nickname: string,
     email: string,
     gender: number,
     phoneNumber: string,
     city: number,
-    nickname: string,
-    pass: string
+    pass: string,
+    code: string,
 }
 
-export interface VerifyForm {
-    code: string;
+export interface CodeVerify {
+    // code: string;
     email: string;
 }

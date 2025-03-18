@@ -1,34 +1,60 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { SingUpForm } from "../../../domain";
+import { Register, SingUpForm } from "../../../domain";
 import { Form } from "../../components"
 import { InputLabel, InputSelect } from "../../shared";
 import ReCAPTCHA from "react-google-recaptcha";
-import React from "react";
-
+import React, { useCallback, useState } from "react";
+import debounce from "lodash.debounce";
+import { useAuth } from "../../hooks";
+// import { useRegisterStore } from "../../store";
+import { toast } from "react-toastify";
 interface FormSingUpProps {
     handleOptionSingUp?: () => void
 }
 export const FormSingUp:React.FC<FormSingUpProps>=({
     handleOptionSingUp
 }) => {
-
-    const { control, register, formState: {errors}, handleSubmit, watch } = useForm<SingUpForm>();   
+    // const { addRegister, registerU } = useRegisterStore()
+    const { control, register, formState: {errors}, handleSubmit, watch } = useForm<SingUpForm>(); 
+    const [ emailError, setEmailError ]  = useState<string | null>(null);
+    const { verifyEmail, sendCode, singUp } = useAuth();
+    const [ nextValidate, setNextValidate ] = useState<boolean>(false);
     const recaptchaRef = React.useRef<ReCAPTCHA | null>(null);
     const pass = watch("pass");	
     const onSubmit: SubmitHandler<SingUpForm> = async (FormData) => {
         const token = recaptchaRef.current?.getValue();
-        console.log(token);
-        console.log(FormData);
+        !token && toast.error("Por favor, verifica que no eres un robot")
+        const response = await sendCode({ email: FormData.email });
+        setNextValidate(response)
     }
+    const onRegister: SubmitHandler<SingUpForm> = async ( formData ) => {
+        console.log(formData);
+    }
+    const validateEmail = useCallback(debounce(async (email: string) => {    
+        try {
+        const response = await verifyEmail(String(email));
+        const errorMessage = response ? "Este correo ya está registrado" : null;       
+        setEmailError(errorMessage);
+        return errorMessage || true;
+        } catch (error) {
+        setEmailError("Error al verificar el correo");
+        return "Error al verificar el correo";
+        }
+    }, 500),
+    []
+    );
+      
     return (
-        <div className="top-0 w-full p-4 h-[440px] md:h-full  overflow-auto absolute">
-            <p
+        <div className="top-0 w-full p-4 h-[480px] md:h-full  overflow-auto absolute">
+            { !nextValidate ?
+            <div className="flex flex-col items-center justify-center md:h-full"> 
+            <Form                 
+                onSubmit={handleSubmit(onSubmit)} 
+                labelSend="Siguiente"
+            >
+                  <p
                 className="text-gray-700 font-bold text-3xl mb-2 text-center"
             >Registrate</p>
-            <Form 
-                onSubmit={handleSubmit(onSubmit)} 
-                labelSend="Registrarse"
-            >
                 <div className="form-row">
                     <InputLabel 
                         label="Nombre"
@@ -60,7 +86,9 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                             pattern: {
                                 value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                                 message: "Ingrese un correo válido"
-                            }
+                            },
+                            validate: () => emailError || true,
+                            onChange: (e: React.ChangeEvent<HTMLInputElement>) => validateEmail(e.target.value)
                          }}
                         placeholder="Ingrese su correo electrónico"
                     />
@@ -148,7 +176,31 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                     <ReCAPTCHA sitekey={import.meta.env.VITE_RECAPTCHAP_KEY} ref={recaptchaRef} />
                 </div>
             <p className="text-gray-700 font-bold my-2">¿Ya tienes cuenta? <span className="text-blue-700 cursor-pointer" onClick={handleOptionSingUp}>Ingresar</span></p> 
-            </Form>  
+            </Form>  </div>:
+            <div className="flex flex-col items-center justify-center h-full">    
+                <Form 
+                    onSubmit={handleSubmit(onRegister)} 
+                    labelSend="Registrarse"
+                    
+                >
+                    <p className="text-gray-700 font-bold text-3xl mb-2 text-center"
+                    >Ingrese el codigo</p>
+                    <p className="text-gray-700 font-bold text-lg mb-2 text-center"
+                    >El codigo fue enviado a su correo</p>
+                    <div className="form-row">
+                        <InputLabel 
+                            label="Código de Verificación"
+                            type="number"   
+                            name={`code`}      
+                            register={register}
+                            errors={errors}                
+                            options={{ required: true }}
+                            placeholder="Ingrese el código de verificación"
+                        />
+                    </div>
+                </Form>
+                </div>
+            }
         </div>
     )
 }
