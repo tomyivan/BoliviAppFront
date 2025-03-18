@@ -1,20 +1,23 @@
+import { toast } from "react-toastify";
 import { FormLogin, FormSingUp, OptionsSingUp } from "../../modules"
 import { useState, useEffect } from "react";
 export const AuthPage = () => {
     const [ singUp, setSingUp ] = useState<Number>(0);
+    const [ token, setToken ] = useState<string | null>(null);
     useEffect(() => {
         const handleMessage = (event: MessageEvent) => {
-          if (event.origin !== import.meta.env.VITE_BASEURL) return; // Asegura que el mensaje venga del backend
-          if (event.data.token) {
+            if (event.origin !== import.meta.env.VITE_BASEURL) return; // Asegura que el mensaje venga del backend
+            event.data.token !== 'undefined'? toast.success(event.data.msg || "Bienvenido") :toast.error(event.data.msg || "Error en la autenticación");              
+                      
             localStorage.setItem("token", event.data.token);
-            console.log("Token guardado:", event.data.token);
-          }
+            localStorage.setItem("msg", event.data.msg);        
         };
-      
         window.addEventListener("message", handleMessage);
         return () => window.removeEventListener("message", handleMessage);
       }, []);
-      
+
+  
+
       const handleSingGoogle = () => {
         const authWindow = window.open(
         `${import.meta.env.VITE_BASEURL}/api/v1/p/auth/redirect/google`,

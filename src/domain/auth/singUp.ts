@@ -22,3 +22,8 @@ export interface Register {
     nickname: string,
     pass: string
 }
+
+export interface VerifyForm {
+    code: string;
+    email: string;
+}

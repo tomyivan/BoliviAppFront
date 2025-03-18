@@ -21,9 +21,9 @@ export const OptionsSingUp:React.FC<OptionsSingUpProps> = ({
                     <FaGoogle size={20} />
                     Google
                 </div>
-                <div className="flex items-center gap-2 transition-transform duration-300 ease-in-out transform hover:scale-105 bg-blue-600 p-3 rounded-full text-gray-100 cursor-pointer">	
+                {/* <div className="flex items-center gap-2 transition-transform duration-300 ease-in-out transform hover:scale-105 bg-blue-600 p-3 rounded-full text-gray-100 cursor-pointer">	
                     <FaFacebook size={20} />
-                    Facebook</div>             
+                    Facebook</div>              */}
             </section>  
             <p className="text-gray-700 font-bold">¿Ya tienes cuenta? <span className="text-blue-700 cursor-pointer" onClick={() => handleOptionSingUp(0)}>Ingresar</span></p> 
         </div>
