@@ -1,4 +1,4 @@
-import { CodeVerify, IAuthDomain, LoginForm, Register, ResponseDTO } from "../../domain";
+import { CodeVerify, IAuthDomain, LoginForm, Register, ResetPassword, ResponseDTO } from "../../domain";
 import { FetchInstance } from "../api/fetch";
 
 export class AuthApiAdapter implements IAuthDomain {
@@ -22,4 +22,17 @@ export class AuthApiAdapter implements IAuthDomain {
     async sendCode( data: CodeVerify ): Promise<ResponseDTO> {
         return await this._http.post<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/send-code`, { auth: { email:data.email } });
     }
+
+    async sendCodeForReset( data: CodeVerify ): Promise<ResponseDTO> {
+        return await this._http.post<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/send-code-reset`, { auth:  data  });
+    }
+
+    async existCode( data: ResetPassword ): Promise<ResponseDTO> {
+        return await this._http.post<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/exist-code`, { auth:  data  });
+    }
+
+    async updatePass( data: ResetPassword ): Promise<ResponseDTO> {
+        return await this._http.post<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/update-pass`, { auth: data  });
+    }
+    
 }

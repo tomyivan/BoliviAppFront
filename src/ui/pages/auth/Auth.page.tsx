@@ -1,22 +1,29 @@
 import { toast } from "react-toastify";
-import { FormLogin, FormSingUp, OptionsSingUp } from "../../modules"
+import { FormForgetPassword, FormLogin, FormSingUp, OptionsSingUp } from "../../modules"
 import { useState, useEffect } from "react";
+import { useCity } from "../../hooks";
+import { List } from "../../../domain";
 export const AuthPage = () => {
     const [ singUp, setSingUp ] = useState<Number>(0);
-    const [ token, setToken ] = useState<string | null>(null);
+    const [ dataCity, setDataCity ] = useState<List[]>([]);
+    const { getCountries } = useCity();
+
+    const loadCity = async () => {
+        const data = await getCountries();
+        setDataCity(data);
+    }
+    const handleMessage = (event: MessageEvent) => {
+        if (event.origin !== import.meta.env.VITE_BASEURL) return; // Asegura que el mensaje venga del backend
+        event.data.token !== 'undefined'? toast.success(event.data.msg || "Bienvenido") :toast.error(event.data.msg || "Error en la autenticación");              
+                  
+        localStorage.setItem("token", event.data.token);
+        localStorage.setItem("msg", event.data.msg);        
+    };
     useEffect(() => {
-        const handleMessage = (event: MessageEvent) => {
-            if (event.origin !== import.meta.env.VITE_BASEURL) return; // Asegura que el mensaje venga del backend
-            event.data.token !== 'undefined'? toast.success(event.data.msg || "Bienvenido") :toast.error(event.data.msg || "Error en la autenticación");              
-                      
-            localStorage.setItem("token", event.data.token);
-            localStorage.setItem("msg", event.data.msg);        
-        };
+        loadCity();
         window.addEventListener("message", handleMessage);
         return () => window.removeEventListener("message", handleMessage);
       }, []);
-
-  
 
       const handleSingGoogle = () => {
         const authWindow = window.open(
@@ -69,16 +76,25 @@ export const AuthPage = () => {
                                { singUp === 0? <FormLogin 
                                     handleSingGoogle={handleSingGoogle}
                                     handleOptionSingUp={() => setSingUp(1)}
+                                    handleForgotPassword={() => setSingUp(3)}
                                 />:
                                     singUp === 1? <OptionsSingUp
                                         handleOptionSingUp={(option:number) => setSingUp(option)}
+                                        handleSingGoogle={handleSingGoogle}
                                     /> : 
                                     singUp === 2? 
                                         <FormSingUp
                                             handleOptionSingUp={() => setSingUp(0)}
+                                            dataCity={dataCity}
+                                        />
+                                    : 
+                                    singUp === 3?
+                                        <FormForgetPassword
+                                            handleCancel={() => setSingUp(0)}
                                         />
                                     : null
                                 }
+
                             </div>
                         </div>
                 </div>

@@ -1,11 +1,12 @@
 import React from "react"
-import { FaEdit, FaFacebook, FaGoogle } from "react-icons/fa"
+import { FaEdit,  FaGoogle } from "react-icons/fa"
 interface OptionsSingUpProps {
     handleOptionSingUp: (option:number) => void
-
+    handleSingGoogle: () => void
 }
 export const OptionsSingUp:React.FC<OptionsSingUpProps> = ({
-    handleOptionSingUp
+    handleOptionSingUp,
+    handleSingGoogle
 }) => {
     return (
         <div className="flex flex-col justify-center items-center h-full ">
@@ -17,7 +18,9 @@ export const OptionsSingUp:React.FC<OptionsSingUpProps> = ({
                     <FaEdit size={20} />
                     Registro Manual</div>
                 <hr/>
-                <div className="flex items-center gap-2 transition-transform duration-300 ease-in-out transform hover:scale-105 bg-red-600 p-3 rounded-full text-gray-100 cursor-pointer">
+                <div className="flex items-center gap-2 transition-transform duration-300 ease-in-out transform hover:scale-105 bg-red-600 p-3 rounded-full text-gray-100 cursor-pointer"
+                    onClick={handleSingGoogle}
+                >
                     <FaGoogle size={20} />
                     Google
                 </div>

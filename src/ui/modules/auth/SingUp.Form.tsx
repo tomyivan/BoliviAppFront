@@ -1,35 +1,59 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Register, SingUpForm } from "../../../domain";
+import { List, Register, SingUpForm } from "../../../domain";
 import { Form } from "../../components"
 import { InputLabel, InputSelect } from "../../shared";
 import ReCAPTCHA from "react-google-recaptcha";
 import React, { useCallback, useState } from "react";
 import debounce from "lodash.debounce";
-import { useAuth } from "../../hooks";
+import { useAuth, useCity } from "../../hooks";
 // import { useRegisterStore } from "../../store";
 import { toast } from "react-toastify";
 interface FormSingUpProps {
-    handleOptionSingUp?: () => void
+    handleOptionSingUp: () => void
+    dataCity: List[]
 }
 export const FormSingUp:React.FC<FormSingUpProps>=({
-    handleOptionSingUp
+    handleOptionSingUp,
+    dataCity
 }) => {
     // const { addRegister, registerU } = useRegisterStore()
-    const { control, register, formState: {errors}, handleSubmit, watch } = useForm<SingUpForm>(); 
+    const { control, register, formState: {errors}, handleSubmit, watch, setValue } = useForm<SingUpForm>(); 
     const [ emailError, setEmailError ]  = useState<string | null>(null);
     const { verifyEmail, sendCode, singUp } = useAuth();
     const [ nextValidate, setNextValidate ] = useState<boolean>(false);
+    const [ dataStates, setDataStates ] = useState<List[]>([]);
     const recaptchaRef = React.useRef<ReCAPTCHA | null>(null);
     const pass = watch("pass");	
+    const { getStates } = useCity();
     const onSubmit: SubmitHandler<SingUpForm> = async (FormData) => {
         const token = recaptchaRef.current?.getValue();
         !token && toast.error("Por favor, verifica que no eres un robot")
         const response = await sendCode({ email: FormData.email });
         setNextValidate(response)
     }
-    const onRegister: SubmitHandler<SingUpForm> = async ( formData ) => {
-        console.log(formData);
+    const onRegister: SubmitHandler<SingUpForm> = async ( formData ) => {     
+        const newData: Register = {
+            name: formData.name,
+            lastname: formData.lastName,
+            email: formData.email,
+            city: String(formData.city.label),
+            state: String(formData.state.label),
+            gender: Number(formData.gender.value),
+            nickname: formData.nickname,
+            phoneNumber: formData.phoneNumber,
+            pass: formData.pass,
+            code: formData.code            
+        }
+        const response = await singUp(newData);
+        response &&  handleOptionSingUp();
     }
+
+    const handleSelectCountry = async (iso2: List) => {
+        setValue("state", null as any);
+        const data = await getStates(String(iso2.value));
+        setDataStates(data);
+    }
+
     const validateEmail = useCallback(debounce(async (email: string) => {    
         try {
         const response = await verifyEmail(String(email));
@@ -122,13 +146,24 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                         label="Ciudad"
                         name="city"
                         errors={errors}
-                        options={{ required: true }}
-                        listOptions={[{value:1, label:"La Paz"}, {value:2, label:"Cochabamba"}]}
+                        options={{ required: true,
+                            onChange: (e: React.ChangeEvent<HTMLSelectElement>) => handleSelectCountry(e.target.value)
+                         }}
+                        listOptions={dataCity}
                         placeholder="Seleccione su ciudad"
                     />     
 
                 </div>
                 <div className="form-row">
+                    <InputSelect 
+                        control={control}
+                        label="Departamento/Estados"
+                        name="state"
+                        errors={errors}
+                        options={{ required: true }}
+                        listOptions={dataStates}
+                        placeholder="Seleccione su departamento"
+                    />
                     <InputLabel 
                         label="Nombre de Usuario"
                         type="text"   

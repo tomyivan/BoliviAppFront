@@ -3,21 +3,21 @@ import { InputLabel } from "../../shared"
 import { LoginForm } from "../../../domain";
 import { Form } from "../../components";
 // import { handleSubmit } from "./Actions"
-import { useNavigate } from "react-router-dom"
-import { FaFacebook, FaGoogle } from "react-icons/fa";
+import {  FaGoogle } from "react-icons/fa";
 import { useAuth } from "../../hooks";
 // import useAuthStore from "../../store/Auth.store"
 interface FormLoginProps {
     handleOptionSingUp?: () => void,
-    handleSingGoogle: () => void
+    handleSingGoogle: () => void,
+    handleForgotPassword?: () => void
 }
 export const  FormLogin: React.FC<FormLoginProps> = ({
     handleOptionSingUp,
-    handleSingGoogle
+    handleSingGoogle,
+    handleForgotPassword
 }) => {
     const { register, formState: {errors}, handleSubmit } = useForm<LoginForm>();   
     const { login } = useAuth();
-    const navigate = useNavigate();
     // const addAuth  = useAuthStore((state) => state.addAuth);
     const onSubmit: SubmitHandler<LoginForm> = async (FormData) => {
         const response = await login(FormData);
@@ -47,7 +47,12 @@ export const  FormLogin: React.FC<FormLoginProps> = ({
                             options={{ required: true }}
                             name="pass"
                             placeholder="Ingrese su contraseña"
-                        />                            
+                        />
+                        <div className="flex justify-end">
+                            <p className="text-blue-700 cursor-pointer hover:underline pb-2"
+                                onClick={handleForgotPassword}
+                            >Olvide mi contraseña</p>
+                        </div>
                 </Form>
                 <div className="mt-2 flex flex-col items-center gap-2">
                     <p className="text-gray-700 text-center">O Inicia session con</p>

@@ -10,6 +10,7 @@ export interface SingUpForm{
     confirmPass: string;
     gender: List;
     city: List;
+    state: List;
     code: string;
 }
 
@@ -20,7 +21,8 @@ export interface Register {
     email: string,
     gender: number,
     phoneNumber: string,
-    city: number,
+    city: string,
+    state: string,
     pass: string,
     code: string,
 }
@@ -28,4 +30,10 @@ export interface Register {
 export interface CodeVerify {
     // code: string;
     email: string;
+}
+
+export interface ResetPassword {
+    email: string;
+    code: string;
+    pass: string;
 }

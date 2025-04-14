@@ -43,7 +43,7 @@ export const InputLabel = <T extends FieldValues>({
           type={type === "password" ? (showPassword ? "text" : "password") : type}
           placeholder={placeholder}
           {...register(name as any, options as any)} // 👈 Forzamos tipo para evitar conflicto
-          className={`border p-1 w-full rounded text-gray-700 border-gray-300 h-[35px] ${ errors[name] ? 'border-red-600' : ''}`}
+          className={`border p-1 w-full rounded text-gray-700 border-gray-300 h-[35px] ${ options?.disabled && 'bg-gray-100 cursor-not-allowed' } ${ errors[name] ? 'border-red-600' : ''}`}
           autoComplete="off"
           defaultValue={defaultValue}
           step={type === "number" && step ? "0.01" : undefined}
