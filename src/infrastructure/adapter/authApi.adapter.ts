@@ -11,6 +11,7 @@ export class AuthApiAdapter implements IAuthDomain {
     async login(data:LoginForm): Promise<ResponseDTO> {
         return await this._http.post<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/login`, { auth: data });
     }
+    
     async singUp(data: Register): Promise<ResponseDTO> {
         return await this._http.post<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/register`, { auth: data });
     }
