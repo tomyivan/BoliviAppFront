@@ -3,28 +3,36 @@ import { FormForgetPassword, FormLogin, FormSingUp, OptionsSingUp } from "../../
 import { useState, useEffect } from "react";
 import { useCity } from "../../hooks";
 import { List } from "../../../domain";
+import { useAuthStore } from "../../store";
+import { useNavigate } from "react-router-dom";
 export const AuthPage = () => {
+    const navigation = useNavigate();
     const [ singUp, setSingUp ] = useState<Number>(0);
     const [ dataCity, setDataCity ] = useState<List[]>([]);
     const { getCountries } = useCity();
-
+    const { addAuth } = useAuthStore(); 
     const loadCity = async () => {
         const data = await getCountries();
         setDataCity(data);
     }
     const handleMessage = (event: MessageEvent) => {
         if (event.origin !== import.meta.env.VITE_BASEURL) return; // Asegura que el mensaje venga del backend
-        event.data.token !== 'undefined'? toast.success(event.data.msg || "Bienvenido") :toast.error(event.data.msg || "Error en la autenticación");              
-                  
-        localStorage.setItem("token", event.data.token);
-        localStorage.setItem("msg", event.data.msg);        
+        if(event.data.token !== 'undefined') {
+            toast.success(event.data.msg || "Bienvenido")
+            localStorage.setItem("token", event.data.token);
+            addAuth(event.data); // Guardar el token en el store
+            localStorage.setItem("msg", event.data.msg);        
+            navigation("/inicio"); // Redirigir a la página de inicio
+        } 
+        else {
+            toast.error(event.data.msg || "Error en la autenticación");              
+        }
     };
     useEffect(() => {
         loadCity();
-        window.addEventListener("message", handleMessage);
+        window.addEventListener("message", handleMessage);        
         return () => window.removeEventListener("message", handleMessage);
       }, []);
-
       const handleSingGoogle = () => {
         const authWindow = window.open(
         `${import.meta.env.VITE_BASEURL}/api/v1/p/auth/redirect/google`,

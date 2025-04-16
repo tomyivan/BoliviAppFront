@@ -3,6 +3,7 @@ import { LoginForm } from "./login";
 import { CodeVerify, Register, ResetPassword } from "./singUp";
 
 export interface IAuthDomain {
+    refreshToken: () => Promise<ResponseDTO>;
     login: ( data:LoginForm ) => Promise<ResponseDTO>;
     singUp: (data: Register) => Promise<ResponseDTO>;
     verifyEmail: ( email:string ) => Promise<ResponseDTO>

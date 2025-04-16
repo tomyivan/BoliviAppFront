@@ -5,6 +5,8 @@ import { Form } from "../../components";
 // import { handleSubmit } from "./Actions"
 import {  FaGoogle } from "react-icons/fa";
 import { useAuth } from "../../hooks";
+import { useAuthStore } from "../../store";
+import { useNavigate } from "react-router-dom";
 // import useAuthStore from "../../store/Auth.store"
 interface FormLoginProps {
     handleOptionSingUp?: () => void,
@@ -16,12 +18,17 @@ export const  FormLogin: React.FC<FormLoginProps> = ({
     handleSingGoogle,
     handleForgotPassword
 }) => {
-    const { register, formState: {errors}, handleSubmit } = useForm<LoginForm>();   
+    const { register, formState: {errors}, handleSubmit } = useForm<LoginForm>();
+    const navigation = useNavigate();
+    const { addAuth } = useAuthStore();
     const { login } = useAuth();
     // const addAuth  = useAuthStore((state) => state.addAuth);
     const onSubmit: SubmitHandler<LoginForm> = async (FormData) => {
         const response = await login(FormData);
-        console.log(response)
+        if(response.token){
+            addAuth(response); // Guardar el token en el store
+            navigation("/inicio"); // Redirigir a la página de inicio
+        }
     }
     return (
         <div className={`flex justify-center items-center h-[100%]`}>

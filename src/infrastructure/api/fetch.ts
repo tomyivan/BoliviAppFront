@@ -10,11 +10,11 @@ export class FetchInstance implements IHttp {
     setHeader(header: any): void {
         this.header = header
     }
-    async get<T>(path: string, params?: Record<string, any>, config?: any): Promise<T | any> {       
+    async get<T>(path: string,  config?: any): Promise<T | any> {       
         const response = await fetch(path, {
             method: "GET",
             headers: this.header,
-            body: JSON.stringify(params),
+            // body: JSON.stringify(params),
             ...config,
         });
         return await response.json();

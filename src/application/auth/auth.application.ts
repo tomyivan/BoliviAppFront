@@ -1,6 +1,9 @@
 import { CodeVerify, IAuthDomain, Register, ResetPassword, ResponseDTO } from "../../domain";
 export class AuthApplication {
     constructor(private readonly _authDomain: IAuthDomain) {}
+async refreshToken():Promise<ResponseDTO> {
+        return await this._authDomain.refreshToken();
+    }
     async login(data: any):Promise<ResponseDTO> {
         return await this._authDomain.login(data);
     }

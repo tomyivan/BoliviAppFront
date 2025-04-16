@@ -8,6 +8,14 @@ export class AuthApiAdapter implements IAuthDomain {
         this._http = new FetchInstance();
         this._baseUrl = import.meta.env.VITE_BASEURL;
     }
+
+    async refreshToken(): Promise<ResponseDTO> {
+        this._http.setHeader({
+            "Content-Type": "application/json",
+            "x-token": localStorage.getItem("token") || "",
+        })
+        return await this._http.get<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/refreshToken`);
+    }
     async login(data:LoginForm): Promise<ResponseDTO> {
         return await this._http.post<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/login`, { auth: data });
     }

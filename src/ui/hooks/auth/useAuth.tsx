@@ -5,14 +5,31 @@ import { AuthApiAdapter } from "../../../infrastructure";
 const _authAdapter = new AuthApiAdapter();
 const _authApplication = new AuthApplication(_authAdapter);
 export const useAuth = () => {
-    const login = async (data: LoginForm) => {
+    const refreshToken = async () => {
+        try {
+            const response = await _authApplication.refreshToken();
+            if( !response || !response?.ok ) {
+                toast.error( response?.msg || 'Error al refrescar el token' );
+                localStorage.removeItem("token");
+                return {} as CredentialDTO;
+            }
+            localStorage.setItem("token", response.body.data.token);
+            return response.body.data;                    
+        } catch (error) {
+            console.error(error);
+            toast.error('Error al refrescar el token');
+            return {} as CredentialDTO;            
+        }
+    }
+    const login = async (data: LoginForm): Promise<CredentialDTO> => {
         const response = await _authApplication.login(data) ;
         if( !response || !response?.ok ) {
             toast.error( response?.msg || 'Usuario o contraseña incorrecta');
-            return false
+            return {} as CredentialDTO;
         }
         toast.success(response.msg);
-        return response;       
+        localStorage.setItem("token", response.body.data.token);
+        return response.body.data;       
     };
     const singUp = async (data: Register) => {
         try {
@@ -103,5 +120,5 @@ export const useAuth = () => {
             return false;
         }
     }
-    return { login, singUp, verifyEmail, sendCode, sendCodeForReset, existCode, updatePass };
+    return { login, singUp, verifyEmail, sendCode, sendCodeForReset, existCode, updatePass, refreshToken };
 }
