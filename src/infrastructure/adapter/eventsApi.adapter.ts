@@ -8,10 +8,17 @@ export class EventsApiAdapter implements IEventsDomain {
         this._baseUrl = import.meta.env.VITE_BASEURL;
     }
     async addEvent(event: Events) :Promise<ResponseDTO>{
-        this._http.loadToken();
+        this._http.setHeader({
+            "Content-Type": "application/json",
+            "x-token": localStorage.getItem("token") || "",
+        });
         return this._http.post(`${this._baseUrl}/api/v1/events/add`, { event });
     }  
     async getCategoriesEvent(): Promise<ResponseDTO> {
+        this._http.setHeader({
+            "Content-Type": "application/json",
+            "x-token": localStorage.getItem("token") || "",
+        });
         this._http.loadToken();
         return this._http.get(`${this._baseUrl}/api/v1/events/type/categories`);
     }

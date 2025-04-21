@@ -38,7 +38,7 @@ export const EventsResource: React.FC<EventsResourceProps> = ({
                                 Cantidad
                             </th>
                             <th>
-                                Monto por Unidad
+                                Precio por Unidad (Bs)
                             </th>
                             <th>
                                 Acciones

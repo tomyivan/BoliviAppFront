@@ -5,3 +5,4 @@ export { useGetMiscellaneous } from "./miscellaneous/useGetMiscellaneous";
 export { useSponsor } from "./sponsor/useSponsor";
 export { useResource } from "./resource/useResource";
 export { useGetEvents } from "./events/useGetEvents";
+export { useAddEvents } from "./events/useAddEvents";

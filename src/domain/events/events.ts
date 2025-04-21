@@ -42,7 +42,7 @@ export interface LocationForm {
 
 export interface ResourceEvent {
     idResource: number;
-    name:       string;
+    amount:       number;
     stock:      number;
 }
 
@@ -54,7 +54,6 @@ export interface ResourceEventForm {
 
 export interface SponsorEvent {
     idSponsor: number;
-    name:      string;
     product:   string;
     stock:     number;
     observation:string;

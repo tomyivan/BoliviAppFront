@@ -8,7 +8,7 @@ import { EventsSponsor } from "./Events.Sponsor";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { EventsLocation } from "./Events.Location";
-import { useDepartaments, useGetMiscellaneous, useResource, useSponsor, useGetEvents } from "../../hooks";
+import { useDepartaments, useGetMiscellaneous, useResource, useSponsor, useGetEvents, useAddEvents } from "../../hooks";
 import { toast } from "react-toastify";
 export const FormEvents  = () => {
     const { getDepartaments } = useDepartaments();
@@ -24,12 +24,14 @@ export const FormEvents  = () => {
     const { getResources } = useResource();
     const { getSponsors } = useSponsor();
     const { getCategoriesEvent } = useGetEvents();
+    const { addEvents } = useAddEvents();
     const onSubmit:SubmitHandler<EventsForm> = async (formData) => {
         if(formData.resources.length === 0) {
             toast.error("Debe agregar al menos un recurso");
             return;
         }
-        console.log(formData);
+        const response = await addEvents(formData);
+        response && navigation("/inicio/eventos");
     };
     const loadDependencies =async () => {   
         const [departaments, measures, resources, sponsors, dataCategory ] = await Promise.all([
