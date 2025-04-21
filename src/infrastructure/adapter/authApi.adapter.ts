@@ -43,5 +43,8 @@ export class AuthApiAdapter implements IAuthDomain {
     async updatePass( data: ResetPassword ): Promise<ResponseDTO> {
         return await this._http.post<ResponseDTO>(`${this._baseUrl}/api/v1/p/auth/update-pass`, { auth: data  });
     }
-    
+    logout(): void {
+        localStorage.removeItem("token");
+        window.location.href = "/boliviApp/login";
+    }    
 }

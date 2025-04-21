@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Form } from "../../components"
-import { Button, InputLabel } from "../../shared"
+import { Button, Input } from "../../shared"
 import { SingUpForm } from "../../../domain";
 import { useState } from "react";
 import { useAuth } from "../../hooks";
@@ -34,7 +34,7 @@ export const FormForgetPassword:React.FC<FormForgetPasswordProps> = ({
                     labelSend="Enviar Codigo"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    <InputLabel
+                    <Input
                         label="CORREO"
                         type="email"   
                         name={`email`}      
@@ -48,7 +48,7 @@ export const FormForgetPassword:React.FC<FormForgetPasswordProps> = ({
                     labelSend="Validar Codigo"
                     onSubmit={handleSubmit(onValidateCode)}
                 >
-                    <InputLabel
+                    <Input
                         label="CODIGO"
                         type="number"   
                         name={`code`}      
@@ -64,7 +64,7 @@ export const FormForgetPassword:React.FC<FormForgetPasswordProps> = ({
                     labelSend="Cambiar Contraseña"
                     onSubmit={handleSubmit(onForgotPassword)}
                 >
-                    <InputLabel
+                    <Input
                         label="CONTRASEÑA"
                         type="password"   
                         name={`pass`}      
@@ -73,7 +73,7 @@ export const FormForgetPassword:React.FC<FormForgetPasswordProps> = ({
                         options={{ required: true }}
                         placeholder="Ingrese su contraseña"
                     />
-                    <InputLabel
+                    <Input
                         label="CONFIRMAR CONTRASEÑA"
                         type="password"   
                         name={`confirmPass`}      
@@ -90,7 +90,7 @@ export const FormForgetPassword:React.FC<FormForgetPasswordProps> = ({
                 <div className="flex justify-end py-2">
                     <Button 
                        variant="btn-outline-danger"
-                       size="sm"
+                       size="btn-sm"
                        widthFull 
                        onClick={handleCancel}
 

@@ -1,16 +1,17 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { List, Register, SingUpForm } from "../../../domain";
+import { DataSelect,  Register, SingUpForm } from "../../../domain";
 import { Form } from "../../components"
-import { InputLabel, InputSelect } from "../../shared";
+import { Input } from "../../shared";
 import ReCAPTCHA from "react-google-recaptcha";
 import React, { useCallback, useState } from "react";
 import debounce from "lodash.debounce";
 import { useAuth, useCity } from "../../hooks";
 // import { useRegisterStore } from "../../store";
 import { toast } from "react-toastify";
+import { InputSelect2 } from "../../shared/input/Input.select2.shared";
 interface FormSingUpProps {
     handleOptionSingUp: () => void
-    dataCity: List[]
+    dataCity: DataSelect[]
 }
 export const FormSingUp:React.FC<FormSingUpProps>=({
     handleOptionSingUp,
@@ -21,14 +22,15 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
     const [ emailError, setEmailError ]  = useState<string | null>(null);
     const { verifyEmail, sendCode, singUp } = useAuth();
     const [ nextValidate, setNextValidate ] = useState<boolean>(false);
-    const [ dataStates, setDataStates ] = useState<List[]>([]);
+    const [ dataStates, setDataStates ] = useState<DataSelect[]>([]);
     const recaptchaRef = React.useRef<ReCAPTCHA | null>(null);
     const pass = watch("pass");	
     const { getStates } = useCity();
-    const onSubmit: SubmitHandler<SingUpForm> = async (FormData) => {
+    const onSubmit: SubmitHandler<SingUpForm> = async (formData) => {
         const token = recaptchaRef.current?.getValue();
+        console.log(formData)
         !token && toast.error("Por favor, verifica que no eres un robot")
-        const response = await sendCode({ email: FormData.email });
+        const response = await sendCode({ email: formData.email });
         setNextValidate(response)
     }
     const onRegister: SubmitHandler<SingUpForm> = async ( formData ) => {     
@@ -36,9 +38,9 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
             name: formData.name,
             lastname: formData.lastName,
             email: formData.email,
-            city: String(formData.city.label),
-            state: String(formData.state.label),
-            gender: Number(formData.gender.value),
+            city: String(formData.city.id),
+            state: String(formData.state.id),
+            gender: Number(formData.gender.id),
             nickname: formData.nickname,
             phoneNumber: formData.phoneNumber,
             pass: formData.pass,
@@ -48,9 +50,10 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
         response &&  handleOptionSingUp();
     }
 
-    const handleSelectCountry = async (iso2: List) => {
+    const handleSelectCountry = async (iso2: DataSelect) => {
+        if( !iso2?.id || iso2?.id === -1 ) return;
         setValue("state", null as any);
-        const data = await getStates(String(iso2.value));
+        const data = await getStates(String(iso2?.id));
         setDataStates(data);
     }
 
@@ -80,32 +83,42 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                 className="text-gray-700 font-bold text-3xl mb-2 text-center"
             >Registrate</p>
                 <div className="form-row">
-                    <InputLabel 
+                    <Input 
                         label="Nombre"
+                        variant="inp-filled"
                         type="text"   
                         name={`name`}      
                         register={register}
-                        errors={errors}                
+                        errors={{
+                            isValid: Boolean(errors.name),
+                        }}                
                         options={{ required: true }}
                         placeholder="Ingrese su nombre"
                     />
-                    <InputLabel 
+                    <Input 
                         label="Apellido"
+                        variant="inp-filled"
                         type="text"   
                         name={`lastName`}      
                         register={register}
-                        errors={errors}                
+                        errors={{
+                            isValid: Boolean(errors.lastName)
+                        }}                
                         options={{ required: true }}
                         placeholder="Ingrese su apellido"
                     />                    
                 </div>
                 <div className="form-row">
-                    <InputLabel 
+                    <Input 
                         label="Correo Electrónico"
+                        variant="inp-filled"
                         type="email"   
                         name={`email`}      
                         register={register}
-                        errors={errors}                
+                        errors={{
+                            isValid: Boolean(errors.email),
+                            message: errors.email?.message
+                        }}                
                         options={{ required: true,
                             pattern: {
                                 value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
@@ -116,23 +129,29 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                          }}
                         placeholder="Ingrese su correo electrónico"
                     />
-                    <InputSelect 
+                    <InputSelect2 
                         control={control}
                         label="Género"
                         name="gender"
-                        errors={errors}
+                        errors={{
+                            isValid: Boolean(errors.gender),                            
+                        }}
                         options={{ required: true }}
-                        listOptions={[{value:1, label:"Masculino"}, {value:2, label:"Femenino"}]}
+                        data={[{id:1, name:"Masculino"}, {id:2, name:"Femenino"}]}
                         placeholder="Seleccione su género"
                     />                   
                 </div>
                 <div className="form-row">
-                    <InputLabel 
-                        label="Numero de Teléfono"  
+                    <Input 
+                        label="Numero de Teléfono"
+                        variant="inp-filled"  
                         type="number"   
                         name={`phoneNumber`}      
                         register={register}
-                        errors={errors}                
+                        errors={{
+                            isValid: Boolean(errors.phoneNumber),
+                            message: errors.phoneNumber?.message
+                        }}                
                         options={{ required: true,
                             pattern: {
                                 value: /^[0-9]{8,8}$/,
@@ -141,47 +160,61 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                          }}
                         placeholder="Ingrese su numero"
                     />
-                    <InputSelect 
+                    <InputSelect2
                         control={control}
                         label="Ciudad"
                         name="city"
-                        errors={errors}
+                        errors={{
+                            isValid: Boolean(errors.city),
+                            message: errors.city?.message
+                        }}
                         options={{ required: true,
-                            onChange: (e: React.ChangeEvent<HTMLSelectElement>) => handleSelectCountry(e.target.value)
+                            onChange: (e: React.ChangeEvent<HTMLSelectElement>) => handleSelectCountry(e.target.value as any)
                          }}
-                        listOptions={dataCity}
+                        data={dataCity}
                         placeholder="Seleccione su ciudad"
                     />     
 
                 </div>
                 <div className="form-row">
-                    <InputSelect 
+                    <InputSelect2
                         control={control}
                         label="Departamento/Estados"
                         name="state"
-                        errors={errors}
+                        errors={{
+                            isValid: Boolean(errors.state),
+                            message: errors.state?.message
+                        }}
                         options={{ required: true }}
-                        listOptions={dataStates}
+                        data={dataStates}
                         placeholder="Seleccione su departamento"
                     />
-                    <InputLabel 
+                    <Input 
                         label="Nombre de Usuario"
+                        variant="inp-filled"
                         type="text"   
                         name={`nickname`}      
                         register={register}
-                        errors={errors}                
+                        errors={{
+                            isValid: Boolean(errors.nickname),
+                            message: errors.nickname?.message
+                        }}                
                         options={{ required: true }}
                         placeholder="Ingrese su nombre de usuario"
                     />
                    
                 </div>
                 <div className="form-row">
-                    <InputLabel 
+                    <Input 
                         label="Contraseña"
+                        variant="inp-filled"
                         type="password"   
                         name={`pass`}      
                         register={register}
-                        errors={errors}                
+                        errors={{
+                            isValid: Boolean(errors.pass),
+                            message: errors.pass?.message
+                        }}                
                         options={{ required: true,
                             minLength: {
                                 value: 8,
@@ -194,12 +227,16 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                          }}
                         placeholder="Ingrese su contraseña"
                     />
-                    <InputLabel
+                    <Input
                         label="Confirmar Contraseña"
+                        variant="inp-filled"
                         type="password"   
                         name={`confirmPass`}      
                         register={register}
-                        errors={errors}                
+                        errors={{
+                            isValid: Boolean(errors.confirmPass),
+                            message: errors.confirmPass?.message
+                        }}                
                         options={{ required: true,
                             validate: (value) => value === pass || "Las contraseñas no coinciden"
 
@@ -223,12 +260,16 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                     <p className="text-gray-700 font-bold text-lg mb-2 text-center"
                     >El codigo fue enviado a su correo</p>
                     <div className="form-row">
-                        <InputLabel 
+                        <Input 
                             label="Código de Verificación"
+                            variant="inp-filled"
                             type="number"   
                             name={`code`}      
                             register={register}
-                            errors={errors}                
+                            errors={{
+                                isValid: Boolean(errors.code),
+                                message: errors.code?.message
+                            }}                
                             options={{ required: true }}
                             placeholder="Ingrese el código de verificación"
                         />

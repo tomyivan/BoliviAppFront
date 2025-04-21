@@ -1,115 +1,163 @@
 @import "tailwindcss";
-
+@layer utilities {
+  .scrollbar-gutter-stable {
+      scrollbar-gutter: stable;
+  }
+}
 @layer components {
-  .layout {
-    @apply flex h-screen relative bg-gray-50
+  /* NavBar style */
+  .main-layout {
+    @apply w-screen h-screen flex flex-row dark:bg-gray-300 bg-teal-50 
   }
-  .main__layout {
-    @apply h-screen w-full flex
+  .main-layout__body{
+    @apply flex flex-col flex-grow ms-4 overflow-y-auto h-[100vh]
   }
-  .sideBar {
-    @apply text-white  relative md:left-0 h-screen flex flex-col bg-gray-700  max-w-[200px] w-full border-r border-gray-300 transition-all text-xs
+  .navbar__container{
+    @apply bg-gray-50 dark:bg-gray-700  mt-2 h-[40px] shadow-md rounded-xl px-2 transition-all duration-500 ease-in-out
   }
-  .sideBar__title{
-    @apply p-4 h-[60px] font-bold uppercase text-2xl border-b bg-gray-700 flex justify-start items-center gap-4
+  .navbar__list {
+    @apply flex flex-row gap-4 items-center justify-center md:justify-end h-full p-2 text-gray-700 dark:text-gray-200
   }
-  .sideBar__content {
-    @apply font-semibold pt-1 
+  .navbar__list-item {
+    @apply cursor-pointer dark:hover:bg-gray-600 hover:bg-gray-200 p-2 rounded-full
   }
-  .sideBar__item {
-    @apply py-2 px-4 flex items-center gap-4 hover:bg-gray-600 cursor-pointer hover:border-l-2 
+  /* NavBar style end */
+  /* Right Bar style */
+  .right-bar__container {
+    @apply fixed right-0 top-0 w-0 h-screen bg-gray-50 dark:bg-gray-800 z-50 flex flex-col overflow-y-auto
   }
-  .sideBar__item__group {
-    @apply py-3 text-left flex gap-4 hover:bg-gray-600 relative w-full px-4 cursor-pointer hover:border-l-2
+  .right-bar__header {
+    @apply p-2 text-2xl text-gray-600 font-bold dark:text-gray-200 flex justify-center items-center gap-2 border-b border-gray-400
   }
-  .sideBar-show {
-    @apply left-0 transition-all
+  /* Right Bar style end*/
+  /* SideBar style */
+  .sidebar__item-active {
+    @apply bg-teal-100 text-teal-600 dark:bg-transparent dark:border-teal-400 dark:border-2 dark:!text-teal-400 
   }
-  .sideBar__item__group__option{
-    @apply absolute left-full top-0 z-10 hidden w-48 mt-0  bg-gray-700  group-hover:block
+  .sidebar__container {
+    @apply h-screen shadow-xl flex flex-col gap-2 p-4 text-gray-700 transition-all duration-500 ease-in-out dark:bg-gray-800  dark:text-gray-200
   }
-  .sideBar__compress {
-    @apply  text-white  relative md:left-0 h-screen flex flex-col bg-gray-700 max-w-[60px] w-full border-r border-gray-300 transition-all text-xs
+  .sidebar__body {
+    @apply flex flex-col text-gray-700  flex-grow h-0
   }
-  .navBar{
-    @apply bg-gray-700 h-[60px] w-full p-4  flex justify-between items-center
+  .sidebar__body-item {
+    @apply flex flex-row gap-4 h-[56px] font-semibold items-center p-2 hover:bg-teal-100 hover:text-teal-600 rounded-lg cursor-pointer dark:hover:bg-transparent hover:dark:border-teal-400 hover:dark:border-2 dark:hover:text-teal-400  dark:text-gray-200
   }
-  .navBar__content{
-    @apply flex justify-between items-center uppercase font-semibold text-gray-100 gap-2
+  .sidebar__body__subitem-container {
+    @apply w-[175px] overflow-hidden transition-[max-height] duration-300 ease-in-out 
   }
-  .navBar__item{
-    @apply hover:cursor-pointer hover:bg-gray-500 p-2 rounded-lg bg-gray-600
+  .sidebar__body__subitem{
+    @apply flex flex-row gap-4 h-[40px] font-semibold items-center p-2 hover:bg-teal-100 hover:text-teal-600 rounded-lg cursor-pointer dark:hover:bg-transparent hover:dark:border-teal-400 hover:dark:border-2 dark:hover:text-teal-400 dark:text-gray-200
   }
-  .content{
-    @apply w-full p-2 bg-gray-50
+  .sidebar__footer {
+    @apply flex flex-row  items-center gap-4 p-2 text-gray-600 h-[49px] cursor-pointer border border-teal-400 rounded-xl dark:text-teal-400
   }
-  .btn {
-    @apply py-1.5 px-3  rounded-md relative overflow-hidden shadow-md font-semibold
+  .sidebar__subgroups-collapse {
+    @apply fixed left-[70px] mt-0 shadow-xl dark:bg-gray-700 rounded-lg z-50 block bg-teal-50
   }
+  /* SideBar style end */
+  /* Header-(navigation bar) */
+  .navigation-bar__container {
+    @apply flex flex-row gap-4 items-center justify-between h-[27px] my-4 text-gray-600 px-4
+  }
+  /* Header-(navigation bar) end */
+
   .is-invalid {
     @apply !border-red-500;
-  } 
-  .btn-primary {
-    @apply bg-blue-500 text-gray-100 hover:bg-blue-400
   }
-  .btn-secondary {
-    @apply bg-gray-500 text-gray-100 hover:bg-gray-400
-  }
-  .btn-danger {
-    @apply bg-red-500 text-gray-100 hover:bg-red-400
-  }
-  .btn-warning {
-    @apply bg-yellow-500 text-gray-100 hover:bg-yellow-400
-  }
-  .btn-success {
-    @apply bg-green-500 text-gray-100 hover:bg-green-400
-  }
-  .btn-info {
-    @apply bg-cyan-500 text-gray-100 hover:bg-cyan-400
-  }
-  .btn-outline-primary {
-    @apply border border-blue-500 text-blue-500 hover:shadow-blue-500 
-  }
-  .btn-outline-secondary {
-    @apply border border-gray-500 text-gray-500 hover:shadow-gray-500
-  } 
-  .btn-outline-success {
-    @apply border border-green-500 text-green-500 hover:shadow-green-500
-  } 
-  .btn-outline-danger {
-    @apply border border-red-500 text-red-500 hover:shadow-red-500
-  } 
-  .btn-outline-warning {
-    @apply border border-yellow-500 text-yellow-500 hover:shadow-yellow-500
-  } 
-  .btn-outline-info {
-    @apply border border-cyan-500 text-cyan-500 hover:shadow-cyan-500
-  }
-  .modal {
-    @apply fixed inset-0 z-50 flex items-center justify-center bg-black 
-  }
-  .modal__content {
-    @apply bg-gray-50 px-4  max-h-[80%] overflow-visible rounded-lg 
-  }
-  .modal__header {
-    @apply flex justify-between items-center sticky top-0 p-2 bg-gray-50 z-10 border-b border-gray-300 pb-2 text-gray-600
-  }
-  .modal__body {
-    @apply p-4 overflow-auto max-h-[550px] 
-  }  
-  .ceilSpreadSheetSelect {
-    @apply cursor-pointer w-full h-full p-2 hover:bg-gray-100
-  }
-  .badge {
-    @apply px-2 py-0.5 text-xs font-medium me-2 rounded
-  }
-  .badge-success {
-    @apply bg-green-100 text-green-800
-  } 
-  .badge-danger {
-    @apply bg-red-100 text-red-800
+  /* button styles */
+  .btn {
+    @apply relative overflow-hidden font-semibold py-2 px-4 z-0 text-gray-700 shadow hover:opacity-80
+}
+.btn-primary {
+    @apply bg-blue-400 text-gray-100
+}
+.btn-secondary {
+    @apply bg-gray-500 text-gray-100
+}   
+.btn-warning {
+    @apply bg-yellow-500 text-gray-100
+}
+.btn-danger {
+    @apply bg-red-500 text-gray-100
+}
+.btn-success {
+    @apply bg-green-400 text-gray-100
+}
+.btn-light {
+    @apply bg-gray-100 text-gray-700
+}
+.btn-dark {
+    @apply bg-gray-700 text-gray-100
+}
+.btn-info {
+    @apply bg-cyan-400 text-gray-100
+}
+.btn-outline-primary {
+    @apply bg-transparent border border-blue-400 text-blue-400 hover:bg-[rgba(215,227,240,0.1)]
+}
+.btn-outline-secondary {
+    @apply bg-transparent border border-gray-500 text-gray-500  hover:bg-[rgba(223,239,255,0.28)]
+}
+.btn-outline-warning {
+    @apply bg-transparent border border-yellow-500 text-yellow-500  hover:bg-[rgba(225,226,210,0.54)]
+}
+.btn-outline-danger {
+    @apply bg-transparent border border-red-500 text-red-500 hover:bg-[rgba(241,223,220,0.18)]
+}
+.btn-outline-success {
+    @apply bg-transparent border border-green-400 text-green-400 hover:bg-[rgba(223,255,237,0.19)]
+}
+.btn-outline-light {
+    @apply bg-transparent border border-gray-100 text-gray-100 hover:bg-[rgba(234,241,248,0.54)]
+}
+.btn-outline-dark {
+    @apply bg-transparent border border-gray-700 text-gray-700 hover:bg-[rgba(228,228,228,0.21)]
+}
+.btn-outline-info {
+    @apply bg-transparent border border-cyan-400 text-cyan-400  hover:bg-[rgba(217,236,240,0.21)]
+}
+.btn-sm {
+    @apply text-sm px-2 py-1
+}
+.btn-lg {
+    @apply text-lg px-4 py-2
+}
+.btn-md {
+    @apply px-2 py-2
+}
+.btn-disabled {
+    @apply cursor-not-allowed hover:opacity-70 bg-gray-400 text-gray-600 opacity-70
+}
+/* Input theme */
+.inp-normal {
+  @apply px-2 border rounded-md border-gray-600
+}
+.inp-filled {
+  @apply p-2 border rounded-md border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 h-[40px]
+}
+.inp-outline {
+  @apply p-2 border-b-2 border-gray-600 outline-none focus:border-blue-500 h-[40px]
+}
+.inp_collapse-normal {
+  @apply w-full py-3 px-2 border-2 border-gray-500 focus:outline-none text-gray-700 focus:border-blue-500 rounded-md transition-all duration-300 ease-in-out
+}
+.inp_collapse-outline {
+  @apply p-2 border-b-2 border-gray-600 outline-none focus:border-blue-500
+}
+.inp_label_collapse {
+  @apply absolute left-2 top-2 px-2 text-gray-600 dark:bg-gray-300 bg-teal-50 font-semibold
+}
+/* Input theme end */
+
+  /* table styles */
+  .table-container {
+    @apply flex flex-col w-full h-full shadow-lg p-2 dark:bg-gray-700 dark:text-gray-200 rounded-lg mb-2
   }
   .form-row {
     @apply flex md:flex-row md:gap-2 flex-col
   }
 } 
+
+/* bg theme end*/
+@custom-variant dark ( &:where(.dark, .dark *) )

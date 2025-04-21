@@ -25,4 +25,8 @@ async refreshToken():Promise<ResponseDTO> {
     async updatePass( data: ResetPassword ):Promise<ResponseDTO>{
         return await this._authDomain.updatePass(data);
     }
+    logout():void {
+        this._authDomain.logout();
+    }
+
 }

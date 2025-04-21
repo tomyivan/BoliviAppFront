@@ -1,5 +1,5 @@
 import React from "react"
-import { FaEdit,  FaGoogle } from "react-icons/fa"
+import { Edit, Globe } from "lucide-react"
 interface OptionsSingUpProps {
     handleOptionSingUp: (option:number) => void
     handleSingGoogle: () => void
@@ -15,13 +15,13 @@ export const OptionsSingUp:React.FC<OptionsSingUpProps> = ({
                 <div 
                     onClick={() => handleOptionSingUp(2)}
                 className="flex items-center gap-2 transition-transform duration-300 ease-in-out transform hover:scale-105 bg-gray-600 p-3 rounded-full text-gray-100 cursor-pointer">
-                    <FaEdit size={20} />
+                    <Edit size={20} />
                     Registro Manual</div>
                 <hr/>
                 <div className="flex items-center gap-2 transition-transform duration-300 ease-in-out transform hover:scale-105 bg-red-600 p-3 rounded-full text-gray-100 cursor-pointer"
                     onClick={handleSingGoogle}
                 >
-                    <FaGoogle size={20} />
+                    <Globe size={20} />
                     Google
                 </div>
                 {/* <div className="flex items-center gap-2 transition-transform duration-300 ease-in-out transform hover:scale-105 bg-blue-600 p-3 rounded-full text-gray-100 cursor-pointer">	

@@ -13,7 +13,7 @@ export interface IAuthDomain {
     updatePass: ( data: ResetPassword ) => Promise<ResponseDTO>
     // verifyEmail: (email: string) => Promise<ResponseDTO>;}
     // verifyCode: (data: CodeVerify) => Promise<ResponseDTO>;
-    // logout: () => Promise<any>;
+    logout: () => void;
     // forgotPass: (email: string) => Promise<any>;
     // resetPass: (data: any) => Promise<any>;
 }

@@ -1,11 +1,11 @@
 import { CityApplication } from "../../../application";
-import { List } from "../../../domain";
+import { DataSelect } from "../../../domain";
 import { CityApiAdapter } from "../../../infrastructure";
 import { toast } from "react-toastify";
 const _cityAdapter = new CityApiAdapter();
 const _cityApplication = new CityApplication(_cityAdapter);
 export const useCity = () => {
-    const getCountries = async ():Promise<List[]> => {
+    const getCountries = async ():Promise<DataSelect[]> => {
         try {
             const response = await _cityApplication.getCountries();
             if( !response || !response?.ok ) {
@@ -19,7 +19,7 @@ export const useCity = () => {
             return []
         }
     };
-    const getStates = async (iso2:string):Promise<List[]> => {
+    const getStates = async (iso2:string):Promise<DataSelect[]> => {
         try {
             const response = await _cityApplication.getStates(iso2);
             if( !response || !response?.ok ) {

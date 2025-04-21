@@ -1,2 +1,7 @@
 export { AuthApplication } from "./auth/auth.application";
 export { CityApplication } from "./city/city.application";
+export { DepartamentsApplication } from "./departaments/departaments.application";
+export { MiscellaneousApplication } from "./miscellaneous/Miscellaneous.application";
+export { SponsorApplication } from "./sponsor/sponsor.application";
+export { ResourceApplication } from "./resource/resource.application";
+export { EventsApplication } from "./events/events.application";

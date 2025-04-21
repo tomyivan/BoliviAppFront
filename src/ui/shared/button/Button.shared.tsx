@@ -1,56 +1,81 @@
-import '../../../assets/css/button.css';
-import { useRef } from 'react';
-import React from 'react';
-export interface ButtonProps {
-    children: React.ReactNode;
-    variant?: 'btn-primary' | 'btn-secondary' | 'btn-success' | 'btn-danger' | 'btn-warning' | 'btn-info' | 'btn-outline-primary'| 'btn-outline-secondary' | 'btn-outline-success' | 'btn-outline-danger' | 'btn-outline-warning' | 'btn-outline-info';
-    onLoad?: boolean;
-    type?: 'button' | 'submit' | 'reset';
-    title?: string;
-    size?: 'sm' | 'md' | 'lg';
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
+interface ButtonProps {
+    variant?: "btn-primary" | "btn-secondary" | "btn-info" | "btn-success" | "btn-warning" | "btn-danger" | "btn-light" | "btn-dark" | "btn-outline-primary" | "btn-outline-secondary" | "btn-outline-info" | "btn-outline-success" | "btn-outline-warning" | "btn-outline-danger" | "btn-outline-light" | "btn-outline-dark";
+    size?: "btn-sm" | "btn-md" | "btn-lg";
+    disabled?: boolean;
+    children?: React.ReactNode;
     widthFull?: boolean;
-    content?: 'center'| 'start' | 'end';
-    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    icon?: React.ReactNode;
+    onClick?: () => void;
+    type?: "button" | "submit" | "reset";
+    fullRounded?: boolean;
+    title?: string;
 }
+export const Button: React.FC<ButtonProps> = ({
+    variant,
+    size = "medium",
+    disabled = false,
+    children = '',
+    widthFull = false,
+    icon,
+    onClick,
+    type = "button",
+    fullRounded = false,
+    title,
+}) => {
+    gsap.registerPlugin(useGSAP);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const { contextSafe } = useGSAP({ scope: buttonRef });
+    const handleClick = contextSafe((e: React.MouseEvent) => {
+        const button = buttonRef.current;
+        if (!button) return;
+        const ripple = document.createElement("span");
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
 
-export const Button: React.FC<ButtonProps> = ({ children, variant, onLoad = false, size = 'md', onClick, type='button', title, widthFull, content }) => {
-    const btn = useRef<HTMLButtonElement | null>(null); // Proporcionar el tipo para useRef
+        Object.assign(ripple.style, {
+            position: "absolute",
+            width: `${size}px`,
+            height: `${size}px`,
+            left: `${x}px`,
+            top: `${y}px`,
+            background: "rgba(255, 255, 255, 0.5)",
+            borderRadius: "9999px",
+            pointerEvents: "none",
+            transform: "scale(0)",
+            opacity: "1",
+            zIndex: "0",
+        });
+        button.appendChild(ripple);
+        gsap.to(ripple, {
+            scale: 2.5,
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            onComplete: () => ripple.remove(),
+        });
+        onClick?.();
+    });
 
-    const handleRippleEffect = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const button = btn.current;
-        if (button) {
-            const ripple = document.createElement("span");
-            ripple.classList.add("ripple");
-            button.appendChild(ripple);
-            const x = e.clientX - button.getBoundingClientRect().left;
-            const y = e.clientY - button.getBoundingClientRect().top;
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        }
-    };
-
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        handleRippleEffect(e);
-        if (onClick) {
-            onClick(e);
-        }
-    };
-
-    // Utilizar un objeto de clases para una mejor legibilidad
-    const buttonClasses = `btn ${variant} cursor-pointer ${size === 'sm' ? 'text-sm py-1.5 px-1.5' : ''} ${onLoad ? 'cursor-not-allowed opacity-40' : ''} ${widthFull ? 'w-full' : ''} ${content === 'center' ? 'flex  justify-center' : content === 'start' ? 'flex  justify-start' : content === 'end' ? 'flex justify-end' : ''}`;
     return (
         <button
-            className={buttonClasses}
-            ref={btn}
+            ref={buttonRef}
             onClick={handleClick}
-            disabled={onLoad}
+            className={`btn ${widthFull && 'w-full'} ${variant} ${size} ${disabled ? "btn-disabled" : "cursor-pointer"} ${fullRounded ? `rounded-full` :`rounded`} `}
+            disabled={disabled}
             type={type}
-            title={title}
+            title={ title }
         >
-            {children}
+            { icon ? 
+                <span className="flex flex-row gap-2 items-center">
+                    { icon }
+                    { children }
+                </span>
+            : children }
         </button>
     );
 };

@@ -1,6 +1,8 @@
-import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import { AuthPage,
         ErrorPage,
+        EventsAddPage,
+        EventsPage,
         HomePage
  } from "../pages";
  import { Layout } from "../Layout/Main.layout";
@@ -33,8 +35,14 @@ export const router =   createBrowserRouter([
         loader: authLoader,
         children: [
             {
-                path: "/inicio",
+                path: "inicio",
                 element: <HomePage />,
+            },{
+                path: "eventos",
+                element: <EventsPage />,
+            },{
+                path: "eventos/nuevo",
+                element: <EventsAddPage />,
             }
         ]
     }

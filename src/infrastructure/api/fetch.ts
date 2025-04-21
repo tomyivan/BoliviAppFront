@@ -10,6 +10,12 @@ export class FetchInstance implements IHttp {
     setHeader(header: any): void {
         this.header = header
     }
+    loadToken(): void {
+        this.header = {
+            "Content-Type": "application/json",
+            "x-token": localStorage.getItem("token") || "",
+        };
+    }
     async get<T>(path: string,  config?: any): Promise<T | any> {       
         const response = await fetch(path, {
             method: "GET",

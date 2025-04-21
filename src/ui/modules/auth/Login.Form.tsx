@@ -1,9 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { InputLabel } from "../../shared"
+import { Input } from "../../shared"
 import { LoginForm } from "../../../domain";
 import { Form } from "../../components";
 // import { handleSubmit } from "./Actions"
-import {  FaGoogle } from "react-icons/fa";
+// import {  FaGoogle } from "react-icons/fa";
+import { Globe } from "lucide-react";
 import { useAuth } from "../../hooks";
 import { useAuthStore } from "../../store";
 import { useNavigate } from "react-router-dom";
@@ -37,20 +38,26 @@ export const  FormLogin: React.FC<FormLoginProps> = ({
                     labelSend="Ingresar"
                 >              
                     <h1 className="text-center font-bold p-4 text-gray-700">INGRESAR</h1>
-                        <InputLabel 
+                        <Input 
                             label="USUARIO"
                             type="text"   
                             name={`nickname`}      
+                            variant="inp-filled"
                             register={register}
-                            errors={errors}                
+                            errors={{
+                                isValid: Boolean(errors.nickname)
+                            }}              
                             options={{ required: true }}
                             placeholder="Ingrese su usuario"
                         />                    
-                        <InputLabel 
+                        <Input 
                             label="CONTRASEÑA"
-                            type="password"      
+                            type="password"     
+                            variant="inp-filled"
                             register={register}
-                            errors={errors}
+                            errors={{
+                                isValid: Boolean(errors.pass)
+                            }}
                             options={{ required: true }}
                             name="pass"
                             placeholder="Ingrese su contraseña"
@@ -64,10 +71,10 @@ export const  FormLogin: React.FC<FormLoginProps> = ({
                 <div className="mt-2 flex flex-col items-center gap-2">
                     <p className="text-gray-700 text-center">O Inicia session con</p>
                     <ul className="flex flex-row justify-center gap-2">
-                        <li className="bg-red-600 p-2 rounded-full text-gray-100 cursor-pointer hover:bg-red-700 transition duration-300"
+                        <li className="bg-red-600 p-2 flex items-center gap-4 rounded-full text-gray-100 cursor-pointer hover:bg-red-700 transition duration-300"
                             onClick={handleSingGoogle}
                         >
-                            <FaGoogle size={20} />
+                            <Globe size={20} /> <span className="font-bold">Google</span>
                         </li>
                         {/* <li className="bg-blue-600 p-2 rounded-full text-gray-100 cursor-pointer hover:bg-blue-800 transition duration-300">
                             <FaFacebook size={20} />

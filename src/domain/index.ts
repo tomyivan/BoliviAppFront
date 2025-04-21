@@ -1,10 +1,19 @@
-export type List = {
-    value: number | string,
-    label:string
-}
 export type { LoginForm, CredentialDTO } from "./auth/login"
 export type { SingUpForm, Register, CodeVerify, ResetPassword } from "./auth/singUp"
 export type { IAuthDomain } from "./auth/iauth.domain"
 export type { ResponseDTO } from "./http/response"
 export type { IHttp } from "./http/ihttp.domain"
 export type { ICityDomain } from "./city/icity.domain"
+export type { SideBarList } from "./layout/sideBar.domain"
+export type { NavBarList } from "./layout/navBar.domain"
+export type { CalendarEvent } from "./calendar/calendar"
+export type { DataSelect } from "./input/input"
+export type { EventsForm, Events } from "./events/events"
+export type { Departaments } from "./departaments/departaments"
+export type { IDepartamentsDomain } from "./departaments/idepartaments.domain"
+export type { IMiscellaneousDomain } from "./miscellaneous/imiscellaneous.domain"
+export type { Sponsor } from "./sponsor/sponsor"
+export type { Resource, ResourceDTO } from "./resource/resource"
+export type { IResourceDomain } from "./resource/iresource.domain"
+export type { ISponsorDomain } from "./sponsor/isponsor.domain"
+export type { IEventsDomain } from "./events/ievents.domain"

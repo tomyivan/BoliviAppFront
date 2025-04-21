@@ -1,1 +1,9 @@
 export { Form } from "./form/Form.components";
+export { SideBar } from "./sideBar/SideBar.component";
+export { NavBar } from "./navBar/NavBar.components";
+export { RightBar } from "./rightBar/RightBar.componentes";
+export { Header } from "./header/Header";
+export { Search } from "./filter/Search.component";
+export { DateFilter } from "./filter/DateFilter.component";
+export { Calendar } from "./calendar/Calendar.component";
+export { Maps } from "./map/Maps.component";

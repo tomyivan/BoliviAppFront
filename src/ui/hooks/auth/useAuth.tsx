@@ -120,5 +120,9 @@ export const useAuth = () => {
             return false;
         }
     }
-    return { login, singUp, verifyEmail, sendCode, sendCodeForReset, existCode, updatePass, refreshToken };
+    const logout = () => {
+        _authApplication.logout();
+        toast.success("Hasta luego!")
+    }
+    return { login, singUp, verifyEmail, sendCode, sendCodeForReset, existCode, updatePass, refreshToken, logout };
 }

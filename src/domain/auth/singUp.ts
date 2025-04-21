@@ -1,4 +1,4 @@
-import { List } from "..";
+import { DataSelect } from "..";
 
 export interface SingUpForm{
     name: string;
@@ -8,9 +8,9 @@ export interface SingUpForm{
     phoneNumber: string;
     pass: string;
     confirmPass: string;
-    gender: List;
-    city: List;
-    state: List;
+    gender: DataSelect;
+    city: DataSelect;
+    state: DataSelect;
     code: string;
 }
 
