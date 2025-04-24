@@ -4,17 +4,16 @@ import { Control, Controller, FieldValues, RegisterOptions } from "react-hook-fo
 interface InputSelectProps<T extends FieldValues> {
     control: Control<any>,
     name: keyof T;
-    options: RegisterOptions,
-    errors: {
+    options?: RegisterOptions,
+    errors?: {
         isValid: boolean;
-        message? : string;
-    },
-    label?: string,
+        message?: string;
+    };
+    label: string,
     placeholder?: string,
     isDisabled?:boolean,
     variant?: "inp-outline" | "inp-filled" | "inp-normal";
     data:   DataSelect[];
-    
 }
 export const InputSelect2 =<T extends FieldValues>({
     control,    
@@ -22,7 +21,7 @@ export const InputSelect2 =<T extends FieldValues>({
     options,
     errors,
     label,
-    placeholder = "",
+    placeholder = "Placeholder",
     isDisabled = false,
     variant,
     data
@@ -33,19 +32,20 @@ export const InputSelect2 =<T extends FieldValues>({
                 control={control}
                 name={name as string}
                 render={({ field }) => (
-                    <InputSelect                                    
+                    <InputSelect  
+
                         {...field}
                         data={ data }
                         label={label}
                         placeholder={placeholder}
                         variant={variant}
                         disabled={isDisabled}
-                        isValid={errors.isValid}                   
+                        isValid={errors?.isValid}                   
                     />
                 )}
                 rules={options}
             />
-            {errors?.isValid && <small className="text-red-600 font-semibold">{ !errors.message ? `Este campo es requerido` : errors.message}</small>}
+            {errors?.isValid && <small className="text-red-600 font-semibold">{ !errors?.message || errors?.message === ''? `Este campo es requerido` : errors?.message}</small>}
         </div>
     )
 }

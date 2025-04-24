@@ -1,8 +1,14 @@
 import { Events, EventsForm, ResponseDTO } from "../../domain";
+import { EventFilters } from "../../domain/events/events";
 import { EventsApiAdapter } from "../../infrastructure";
 export class EventsApplication {
     constructor(private readonly _eventsApi: EventsApiAdapter) {
         this._eventsApi = new EventsApiAdapter();
+    }
+    async getEvents( type: number, q: EventFilters) {
+        if ( type === 1 ) {
+            return this._eventsApi.getSimpleEvent(q);
+        }
     }
     async addEvent(event: EventsForm): Promise<ResponseDTO> {
         const newData:Events = {

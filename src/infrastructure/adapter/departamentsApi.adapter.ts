@@ -8,6 +8,7 @@ export class DepartamentsApiAdapter implements IDepartamentsDomain {
         this._baseUrl = import.meta.env.VITE_BASEURL;
     }
     async getDepartaments(): Promise<ResponseDTO> {
+        this._http.loadToken();
         return await this._http.get(`${this._baseUrl}/api/v1/dependences/departaments`);
     }
 }

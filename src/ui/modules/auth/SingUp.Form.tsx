@@ -136,6 +136,7 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                         errors={{
                             isValid: Boolean(errors.gender),                            
                         }}
+                        variant="inp-filled"
                         options={{ required: true }}
                         data={[{id:1, name:"Masculino"}, {id:2, name:"Femenino"}]}
                         placeholder="Seleccione su género"
@@ -168,6 +169,7 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                             isValid: Boolean(errors.city),
                             message: errors.city?.message
                         }}
+                        variant="inp-filled"
                         options={{ required: true,
                             onChange: (e: React.ChangeEvent<HTMLSelectElement>) => handleSelectCountry(e.target.value as any)
                          }}
@@ -185,6 +187,7 @@ export const FormSingUp:React.FC<FormSingUpProps>=({
                             isValid: Boolean(errors.state),
                             message: errors.state?.message
                         }}
+                        variant="inp-filled"
                         options={{ required: true }}
                         data={dataStates}
                         placeholder="Seleccione su departamento"

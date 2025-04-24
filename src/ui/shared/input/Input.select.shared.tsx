@@ -11,8 +11,9 @@ interface InputSelectProps<T extends FieldValues> {
     value?: DataSelect | null;
     onChange?: (value:DataSelect) => void;
     onBlur?: () => void;
-    name?: keyof T;
+    name: keyof T;
     isValid?: boolean;
+
 }
 
 export const InputSelect = <T extends FieldValues>({
@@ -27,14 +28,16 @@ export const InputSelect = <T extends FieldValues>({
     name,
     isValid = false
 }: InputSelectProps<T>) => {
-    // console.log(data);
     const [isOpen, setIsOpen] = useState(false);
-    const [filteredData, setFilteredData] = useState<DataSelect[]>([]);
+    const [filteredData, setFilteredData] = useState<DataSelect[]>(data);
     const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
-    const dropdownRef = useRef<HTMLInputElement>(null);
+    const dropdownRef = useRef<HTMLUListElement>(null);
     const [inputValue, setInputValue] = useState<string>('');
     const [dropdownDirection, setDropdownDirection] = useState<"up" | "down">("down")
     const divRef = useRef<HTMLDivElement>(null);
+    useEffect(()=> {
+        setInputValue(value?.name ?? "")
+    },[value])
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {    
             if (divRef.current && !divRef.current.contains(event.target as Node)) {
@@ -55,15 +58,16 @@ export const InputSelect = <T extends FieldValues>({
         };
     }, []);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value.toLowerCase();
+        const newValue = e.target.value;        
         const newData = data.filter((item) =>
-            item.name.toLowerCase().includes(newValue)
+            item.name.toLowerCase().includes(newValue.toLowerCase())
         );
         if( !isOpen ) {
             setIsOpen(true);
         }
         setFilteredData(newData);
         setHighlightedIndex(-1);
+        // onChange?.( { id: -1, name: newValue } )
         setInputValue(newValue  );
     };
 
@@ -94,20 +98,49 @@ export const InputSelect = <T extends FieldValues>({
         }
     };
 
-    const handleBlur = () => {
-        const valid = filteredData.some((item) => item.name === ( inputValue ));
-        if(!valid){ 
-            setFilteredData(data);
-            setInputValue('');
-            onChange?.( null as any );
+    const updateDropdownPosition = () => {
+        if( isOpen && dropdownRef.current && divRef.current ) {
+            const divRect = divRef.current.getBoundingClientRect();
+            dropdownRef.current.style.top = `${divRect.bottom + window.scrollY}px`;
+            dropdownRef.current.style.left = `${divRect.left + window.scrollX}px`;
+            const hInput = divRef.current.children[1].getBoundingClientRect().height;
+            dropdownRef.current.style.transform = dropdownDirection === "up" ? `translateY(calc(-100% - ${hInput < 40 ? hInput+15 : hInput}px))` : `translateY(0)`;
         }
+    }
+    useEffect(() => {
+        if (!isOpen) return; 
+        updateDropdownPosition();
+        const handleScroll = () => {
+            updateDropdownPosition();
+        }
+        window.addEventListener("scroll", handleScroll, true);
+        window.addEventListener("resize", updateDropdownPosition);
+        return () => {
+            window.removeEventListener("scroll", handleScroll, true);
+            window.removeEventListener("resize", updateDropdownPosition);
+        };
+    }, [isOpen]);
+    const handleBlur = () => {
+        if ( dropdownRef.current ) return;   
+
+        const selectedItem = filteredData.find((item) => item.name.toLowerCase() === ( (inputValue).toLowerCase() ));
+        if(!selectedItem?.id){ 
+            setInputValue('');
+            value?.name && onChange?.( null as any );
+        }else{        
+            setInputValue(selectedItem.name);
+            onChange?.(selectedItem);                     
+        }
+        setFilteredData(data);
+        onBlur?.();
     };
+
+
     useEffect(() => {
         if ( data.length === 0 ) {
             setFilteredData([
                 { id: -1, name: 'Cargando...' }
-            ]);
-            setInputValue('');            
+            ]);       
         }
         else {
             setFilteredData(data);
@@ -115,15 +148,15 @@ export const InputSelect = <T extends FieldValues>({
     }
     , [data]);
     return (
-        <div className="relative w-full" ref={divRef}>
+        <div  className="relative w-full" ref={divRef}>
             {label && (
                 <label className={`block text-gray-700 font-semibold mb-2 ${ isValid && `text-red-500`}`} htmlFor={String(name)}>
                     {label}
                 </label>
             )}
-            <input
-                ref={dropdownRef}
+            <input                
                 name={String(name)}
+                id={String(name)}
                 type="text"
                 className={`${variant} ${disabled && "cursor-not-allowed bg-gray-200 opacity-40"} ${ isValid && '!border-red-500' } w-full `}
                 placeholder={placeholder}
@@ -133,16 +166,17 @@ export const InputSelect = <T extends FieldValues>({
                 onKeyDown={handleKeyDown}              
                 autoComplete="off"
                 onChange={handleChange}
-                onBlur={() =>  {
-                    handleBlur();
-                    onBlur && onBlur();
-                }}
+                onBlur={handleBlur}
 
             />
             {isOpen && filteredData.length > 0 && (
-                <ul className={`absolute z-10 w-full bg-gray-50 max-h-64 overflow-auto text-gray-700 border border-gray-300 rounded-md shadow-lg
-                ${dropdownDirection === "up" && "bottom-full" }
-                `}>
+                <ul 
+                    ref={dropdownRef}
+                    className={`fixed z-50  bg-gray-50 max-h-64 overflow-auto text-gray-700 border border-gray-300 rounded-md shadow-lg`}
+                        style={{
+                            width: divRef.current ? `${divRef.current.clientWidth}px` : "auto",
+                        }}
+                    >
                     {filteredData.map((item, index) => (
                         <li
                             key={item.id}
