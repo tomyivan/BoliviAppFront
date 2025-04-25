@@ -6,19 +6,16 @@ import { Days } from "./Days.component";
 import { Month } from "./Month.component";
 import { DayDetail } from "./DayDetail.components";
 import { CalendarEvent } from "../../../domain";
+import { colors } from "./colors";
 
-export const mockEvents: CalendarEvent[] = [
-    { date: '2025-04-04', title: 'Reunión con clientes',  startTime: '05:00' , endTime: '06:00', color: 'bg-blue-500' },
-    { date: '2025-04-12', title: 'Taller de diseño', startTime: '08:00' , endTime: '10:00', color: 'bg-green-500' },
-    { date: '2025-04-12', title: 'Cumpleaños de Ana', startTime: '11:00' , endTime: '14:00', color: 'bg-pink-500' },
-    { date: '2025-04-27', title: 'Demo producto',  startTime: '15:00' , endTime: '16:00', color: 'bg-yellow-500' },
-    { date: '2025-04-27', title: 'Demo producto',  startTime: '11:00' , endTime: '17:00', color: 'bg-yellow-500' },
-    { date: '2025-04-27', title: 'Demo producto',  startTime: '14:00' , endTime: '15:00', color: 'bg-yellow-500' },
-    { date: '2025-04-27', title: 'Demo producto',  startTime: '11:00' , endTime: '12:00', color: 'bg-yellow-500' },
-    { date: '2025-04-27', title: 'Demo producto',  startTime: '10:00' , endTime: '13:00',color: 'bg-yellow-500' },
-  ];
-  
-export const Calendar = () => {
+interface CalendarProps {
+    data: CalendarEvent[];
+    handleEvent?: (event: CalendarEvent) => void;   
+}
+export const Calendar:React.FC<CalendarProps> = ({
+    data,
+    handleEvent
+}) => {
     const [currentMonth, setCurrentMonth] = useState(dayjs().startOf("month"));
     const containerRef = useRef<HTMLDivElement>(null);
     const [ dayDetail, setDayDetail ] = useState<CalendarEvent[]>([]);
@@ -54,8 +51,8 @@ export const Calendar = () => {
         }
     };
 
-    const getEventsForDay = (day: dayjs.Dayjs) =>
-        mockEvents.filter((e) => dayjs(e.date).isSame(day, "day"));
+    const getEventsForDay = (day: dayjs.Dayjs) =>        
+        data.filter((e) => dayjs(e.date).isSame(day, "day"));
 
     const handleDay = (day: dayjs.Dayjs) => {
         const events = getEventsForDay(day);
@@ -65,6 +62,7 @@ export const Calendar = () => {
         <div className="flex h-full mx-auto p-4 text-gray-700 bg-gray-50 shadow-lg rounded-lg w-full dark:bg-gray-700 dark:text-gray-200">
             <DayDetail
                 data={dayDetail}
+                handleEvent={handleEvent}
             />
 
         <div className="w-full h-full rounded-lg dark:bg-gray-800 shadow-lg overflow-hidden">
@@ -96,12 +94,12 @@ export const Calendar = () => {
                             { events?.length > 0 && <div className="space-y-1 mt-1">
 
                                     <div                                        
-                                        className={`text-white text-xs px-1 rounded ${events[0]?.color}`}
+                                        className={`text-white text-xs px-1 rounded ${colors[index % colors.length]}`}
                                     >
                                         {events[0]?.title}
                                     </div>
                                     <div                                        
-                                        className={`text-white text-xs px-1 rounded ${events[1]?.color}`}
+                                        className={`text-white text-xs px-1 rounded ${colors[index % colors.length]}`}
                                     >
                                         {events[1]?.title}
                                     </div>

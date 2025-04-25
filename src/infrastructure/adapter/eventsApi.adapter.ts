@@ -9,13 +9,9 @@ export class EventsApiAdapter implements IEventsDomain {
         this._baseUrl = import.meta.env.VITE_BASEURL;
     }
     async getSimpleEvent(q?:EventFilters): Promise<ResponseDTO> {
-        const params = 
-        this._http.setHeader({
-            "Content-Type": "application/json",
-            "x-token": localStorage.getItem("token") || "",
-        });
+        const encodedQuery = new URLSearchParams(q as any).toString();
         this._http.loadToken();
-        return this._http.get(`${this._baseUrl}/api/v1/events/simple`);
+        return this._http.get(`${this._baseUrl}/api/v1/events/simple?${encodedQuery}`);
     }
     async addEvent(event: Events) :Promise<ResponseDTO>{
         this._http.setHeader({

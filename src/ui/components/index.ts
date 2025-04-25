@@ -7,3 +7,4 @@ export { Search } from "./filter/Search.component";
 export { DateFilter } from "./filter/DateFilter.component";
 export { Calendar } from "./calendar/Calendar.component";
 export { Maps } from "./map/Maps.component";
+export { Modal } from "./modal/Modal.components";

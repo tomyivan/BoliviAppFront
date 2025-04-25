@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { EventsApp } from "../../../dependences/Events.dependences"
-import { DataSelect } from "../../../domain";
-import { EventSimpleDTO } from "../../../domain/events/events";
+import { DataSelect, EventFilters, EventSimpleDTO } from "../../../domain";
+
 export const useGetEvents = () => { 
     const getCategoriesEvent = async ():Promise<DataSelect[]> => {
         try {
@@ -17,9 +17,9 @@ export const useGetEvents = () => {
         }
     };
 
-    const getEvents = async (type: number): Promise<EventSimpleDTO[]> => {
+    const getEvents = async (type: number, q:EventFilters): Promise<EventSimpleDTO[]> => {
         try {
-            const response = await EventsApp.getEvents( type );
+            const response = await EventsApp.getEvents( type, q );
             if (!response || !response.ok) {
                 toast.error(response?.msg || "Error al obtener eventos simples");
                 return [];

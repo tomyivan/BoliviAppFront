@@ -1,6 +1,26 @@
 import { Departaments } from "../departaments/departaments";
 import { DataSelect } from "../input/input";
 
+export interface EventFilters {
+    date?: string;
+    startTime?: string;
+    endTime?: string;
+    name?: string;
+    detail?: string;
+    idCategory?: number;
+    from: string;
+    to: string;
+
+}
+
+export interface EventSimpleDTO {
+    idEvent: number;
+    date: string;
+    startTime: string;
+    endTime: string;
+    title: string;
+}
+
 export interface EventsForm {
     name:       string;
     detail:     string;
