@@ -55,8 +55,8 @@ export interface LocationEvent {
 
 export interface LocationForm {
     name:          string;
-    latitude:      number;
-    longitude:     number;
+    latitude?:      number ;
+    longitude?:     number;
     departament: Departaments;
 }
 
@@ -86,4 +86,17 @@ export interface SponsorEventForm {
     stock:       number;
     observation: string;
     measure:   DataSelect;
+}
+
+export interface EventFileDTO {
+    idFile?: number;
+    idEvent: number;
+    name: string;
+    ext: string;
+}
+
+export interface EventFile{
+    idFile: number;
+    idEvent: number;
+    name: string;
 }

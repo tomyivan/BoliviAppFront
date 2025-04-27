@@ -9,7 +9,7 @@ interface InputSelectProps<T extends FieldValues> {
         isValid: boolean;
         message?: string;
     };
-    label: string,
+    label?: string,
     placeholder?: string,
     isDisabled?:boolean,
     variant?: "inp-outline" | "inp-filled" | "inp-normal";

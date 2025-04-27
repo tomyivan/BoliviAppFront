@@ -6,3 +6,5 @@ export { useSponsor } from "./sponsor/useSponsor";
 export { useResource } from "./resource/useResource";
 export { useGetEvents } from "./events/useGetEvents";
 export { useAddEvents } from "./events/useAddEvents";
+export { useDeleteEvents } from "./events/useDeleteEvents";
+export { useEditEvents } from "./events/useEditEvents";

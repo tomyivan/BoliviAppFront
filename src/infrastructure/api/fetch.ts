@@ -52,5 +52,13 @@ export class FetchInstance implements IHttp {
         });
         return await response.json();
     }
-
+    async upload<T>(path: string, params?: any, config?: any): Promise<T | any> {
+        const response = await fetch(path, {
+            method: "POST",
+            headers: this.header,
+            body: params,
+            ...config,
+        });
+        return await response.json();
+    }
 }

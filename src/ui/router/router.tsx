@@ -3,7 +3,9 @@ import { AuthPage,
         ErrorPage,
         EventsAddPage,
         EventsPage,
-        HomePage
+        HomePage,
+        GaleryPage,
+        EventsEditPage
  } from "../pages";
  import { Layout } from "../Layout/Main.layout";
  const prevAuth = ( urlParams: URLSearchParams ) => {
@@ -43,6 +45,12 @@ export const router =   createBrowserRouter([
             },{
                 path: "eventos/nuevo",
                 element: <EventsAddPage />,
+            },{
+                path: "eventos/galeria/:id",
+                element: <GaleryPage />,
+            },{
+                path: "eventos/editar/:id",
+                element: <EventsEditPage />,
             }
         ]
     }

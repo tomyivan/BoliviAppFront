@@ -1,15 +1,20 @@
 import { useNavigate } from "react-router-dom"
 import { Pen, Trash, BookImage, Info } from "lucide-react";
-export const EventsOptions = () => {
+interface EventsProps {
+    idEvent: number;
+}
+export const EventsOptions:React.FC<EventsProps> = ({
+    idEvent
+}) => {
     const navigate = useNavigate();
     const classli = "shadow-2xl bg-blue-200 p-2 rounded-lg cursor-pointer hover:scale-105 transition-transform flex items-center gap-2"
     const handleOption = (type :number) => {
         if(  type === 1 ) {
-            navigate("editar")
+            navigate(`editar/${idEvent}` )
         }else if(type === 2){
-            navigate("galeria")
+            navigate(`galeria/${idEvent}`)
         }else if(type === 3){
-            navigate("detalle")
+            navigate(`detalle/${idEvent}`)
         }
     }
     return (

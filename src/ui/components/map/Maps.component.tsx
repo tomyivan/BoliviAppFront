@@ -56,6 +56,7 @@ import {
     useEffect(() => {
       if (cordinates) {
         setDepartamento(cordinates);        
+        setClickedCoords(cordinates);
       }
     }, [cordinates]);
     

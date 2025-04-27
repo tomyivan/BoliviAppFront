@@ -1,25 +1,41 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Departaments, EventsForm } from '../../../domain';
 import { Input, InputSelect2 } from '../../shared';
-import { set, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { Maps } from '../../components';
 interface EventsLocationProps {
     departaments: Departaments[];
     // handleCordinates?: (cordinates: { lat: number; lng: number }) => void;
+    lat?: number;
+    lng?: number;
 }
 
 export const EventsLocation:React.FC<EventsLocationProps> = ({
     departaments,
-    // handleCordinates
+    lat,
+    lng,
 }) => {
     const { control, setValue, register, formState:{errors}, watch } = useFormContext<EventsForm>();
     const [showMap, setShowMap] = useState(false);
     const handleCordinates = (cordinates: { lat: number; lng: number }) => {
-        setValue('location.latitude', showMap ?  cordinates.lat : 0);
-        setValue('location.longitude', showMap ? cordinates.lng : 0);
+        setValue('location.latitude', showMap ?  cordinates.lat : undefined);
+        setValue('location.longitude', showMap ? cordinates.lng : undefined);
     };
+    const handleShowMap = () => { 
+      if(showMap) {
+        setValue('location.latitude', undefined);
+        setValue('location.longitude', undefined);
+      }else {
+        setValue('location.latitude', lat);
+        setValue('location.longitude', lng);
+      }
+      setShowMap((prev) => !prev);
+    }
     const department = watch('location.departament');	
+    useEffect(() => {
+      setShowMap(Boolean(lat && lng))
+    }, []);
     return (
         <section className="flex w-full h-full flex-col my-2">
              <div className="flex items-center my-2">
@@ -60,7 +76,7 @@ export const EventsLocation:React.FC<EventsLocationProps> = ({
             name="isMap"
             id="isMap"
             className="w-5 h-5 cursor-pointer"
-            onChange={() => setShowMap((prev) => !prev)}
+            onChange={handleShowMap}
             checked={showMap}
           />
           <label htmlFor="isMap" className="select-none cursor-pointer">
@@ -71,8 +87,8 @@ export const EventsLocation:React.FC<EventsLocationProps> = ({
       {showMap && 
       <Maps
         cordinates={ department?.name ?  {
-          lat: Number(department?.lat),
-          lng: Number(department?.lng),
+          lat: lat ? lat :  Number(department?.lat),
+          lng: lng ? lng : Number(department?.lng),
         }: null}
         handleChange={handleCordinates}
       />

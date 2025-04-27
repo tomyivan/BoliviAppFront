@@ -5,4 +5,5 @@ export interface IHttp {
     put: <T>(path: string, params?: Record<string, any>, config?: any) => Promise<T | ResponseDTO>;
     delete: <T>(path: string, params?: any, config?: any) => Promise<T | any>;
     setHeader: (token: any) => void;   
+    upload: <T>(path: string, params?: any, config?: any) => Promise<T | ResponseDTO>;
 }

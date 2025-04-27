@@ -35,6 +35,7 @@ export const InputSelect = <T extends FieldValues>({
     const [inputValue, setInputValue] = useState<string>('');
     const [dropdownDirection, setDropdownDirection] = useState<"up" | "down">("down")
     const divRef = useRef<HTMLDivElement>(null);
+    const inpRef = useRef<HTMLInputElement>(null);
     useEffect(()=> {
         setInputValue(value?.name ?? "")
     },[value])
@@ -103,8 +104,8 @@ export const InputSelect = <T extends FieldValues>({
             const divRect = divRef.current.getBoundingClientRect();
             dropdownRef.current.style.top = `${divRect.bottom + window.scrollY}px`;
             dropdownRef.current.style.left = `${divRect.left + window.scrollX}px`;
-            const hInput = divRef.current.children[1].getBoundingClientRect().height;
-            dropdownRef.current.style.transform = dropdownDirection === "up" ? `translateY(calc(-100% - ${hInput < 40 ? hInput+15 : hInput}px))` : `translateY(0)`;
+            const hInput = inpRef.current?.clientHeight ?? 0;
+            dropdownRef.current.style.transform = dropdownDirection === "up" ? `translateY(calc(-100% - ${hInput}px))` : `translateY(0)`;
         }
     }
     useEffect(() => {
@@ -154,7 +155,8 @@ export const InputSelect = <T extends FieldValues>({
                     {label}
                 </label>
             )}
-            <input                
+            <input               
+                ref={inpRef} 
                 name={String(name)}
                 id={String(name)}
                 type="text"

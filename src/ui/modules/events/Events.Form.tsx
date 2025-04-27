@@ -2,15 +2,21 @@ import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
 import { Form } from "../../components"
 import { useNavigate } from "react-router-dom";
 import { Input, InputSelect2 } from "../../shared"
-import { DataSelect, Departaments, EventsForm } from "../../../domain";
+import { DataSelect, Departaments, Events, EventsForm } from "../../../domain";
 import { EventsResource } from "./Events.Resource";
 import { EventsSponsor } from "./Events.Sponsor";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { EventsLocation } from "./Events.Location";
-import { useDepartaments, useGetMiscellaneous, useResource, useSponsor, useGetEvents, useAddEvents } from "../../hooks";
+import { useDepartaments, useGetMiscellaneous, useResource, useSponsor, useGetEvents, useAddEvents, useEditEvents } from "../../hooks";
 import { toast } from "react-toastify";
-export const FormEvents  = () => {
+interface FormEventsProps {
+    data?: Events;
+}
+
+export const FormEvents:React.FC<FormEventsProps>  = ({
+    data
+}) => {
     const { getDepartaments } = useDepartaments();
     const { getMeasures } = useGetMiscellaneous();
     const navigation = useNavigate();
@@ -25,12 +31,18 @@ export const FormEvents  = () => {
     const { getSponsors } = useSponsor();
     const { getCategoriesEvent } = useGetEvents();
     const { addEvents } = useAddEvents();
+    const { editEvents } = useEditEvents();
     const onSubmit:SubmitHandler<EventsForm> = async (formData) => {
         if(formData.resources.length === 0) {
             toast.error("Debe agregar al menos un recurso");
             return;
         }
-        const response = await addEvents(formData);
+        let response = false;
+        if(data?.idEvent) {
+            response = await editEvents(formData, data.idEvent);
+        }else {
+            response = await addEvents(formData);
+        }
         response && navigation("/inicio/eventos");
     };
     const loadDependencies =async () => {   
@@ -46,17 +58,58 @@ export const FormEvents  = () => {
         setResources(resources);
         setSponsors(sponsors);
         setCategories(dataCategory);
+        return {
+            departaments,
+            measures,
+            resources,
+            sponsors,
+            dataCategory
+        }
     }
+    const loadForm = async () => {
+        const { departaments, measures, resources, sponsors ,dataCategory } = await loadDependencies();
+        if (data) {
+            const category = dataCategory.find((cat) => cat.id === data.idCategory);
+            const departament = departaments.find((dep) => dep.id === data.location.codDepartment); 
+            reset({         
+                category,       
+                name: data.name,
+                detail: data.detail,
+                date: data.date, 
+                startTime: data.startTime, 
+                endTime: data.endTime,
+                location:{
+                    name: data.location.name,
+                    latitude: data.location.latitude,
+                    longitude: data.location.longitude,
+                    departament
+                },
+                resources: data.resources.map((resource) => ({
+                    resource: resources.find((res) => res.id === resource.idResource),
+                    amount: resource.amount,
+                    stock: resource.stock,
+                })),
+                sponsors: data.sponsors.map((sponsor) => ({
+                    sponsor: sponsors.find((res) => res.id === sponsor.idSponsor),
+                    product: sponsor.product,
+                    stock: sponsor.stock,
+                    observation: sponsor.observation ?? 'S/O',
+                    measure: measures.find((res) => res.id === sponsor.idMeasure),
+                })),
+            });
+        } else {
+            reset({
+                name: '', 
+                date: dayjs().format('YYYY-MM-DD'), 
+                startTime: dayjs().format('HH:mm'), 
+                endTime: dayjs().add(2,"hour").format('HH:mm'),
+                resources: [],
+                sponsors: [],
+            });
+        }
+    } 
     useEffect(() => {
-        reset({
-            name: '', 
-            date: dayjs().format('YYYY-MM-DD'), 
-            startTime: dayjs().format('HH:mm'), 
-            endTime: dayjs().add(2,"hour").format('HH:mm'),
-            resources: [],
-            sponsors: [],
-        });
-        loadDependencies()
+        loadForm()
     }, []);
     return (
         <FormProvider {...method}>
@@ -136,8 +189,9 @@ export const FormEvents  = () => {
                 sponsors={sponsors}
             />
             <EventsLocation 
-                departaments={departaments}  
-                    
+                lat={data?.location.latitude}
+                lng={data?.location.longitude}                
+                departaments={departaments}                      
             />
             <div className="form-row">
                     <div className="w-full">

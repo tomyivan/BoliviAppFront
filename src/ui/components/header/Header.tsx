@@ -1,16 +1,19 @@
 import { useLocation } from "react-router-dom"
 import {  useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 export const Header = () => {
     const location = useLocation();
+    const { id } = useParams<{ id: string }>();
     const [ title, setTitle ] = useState<string>('')
     const [ navigation, setNavigation ] = useState<{
         label: string,
         link?: string
     }[]>([])
     useEffect(() => {
+        
         const path = location.pathname.split('/').filter((item) => item !== '');
+        if( id !== undefined ) path.pop();
         const newTitle = path.length > 0 ? path[path.length - 1] : 'Inicio';
         setTitle(newTitle.charAt(0).toUpperCase() + newTitle.slice(1));
         setNavigation( path.map((item, index) => {

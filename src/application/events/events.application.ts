@@ -1,9 +1,12 @@
-import { Events, EventsForm, ResponseDTO } from "../../domain";
+import { Events, EventsForm, ResponseDTO, EventFileDTO } from "../../domain";
 import { EventFilters } from "../../domain/events/events";
 import { EventsApiAdapter } from "../../infrastructure";
 export class EventsApplication {
     constructor(private readonly _eventsApi: EventsApiAdapter) {
         this._eventsApi = new EventsApiAdapter();
+    }
+    getEvent(idEvent: number): Promise<ResponseDTO> {
+        return this._eventsApi.getEvent(idEvent);
     }
     async getEvents( type: number, q: EventFilters) {
         if ( type === 1 ) {
@@ -11,7 +14,29 @@ export class EventsApplication {
         }
     }
     async addEvent(event: EventsForm): Promise<ResponseDTO> {
-        const newData:Events = {
+        const newData = this.formatterEvent(event);
+        return this._eventsApi.addEvent(newData);
+    }
+    async updateEvent(event: EventsForm, idEvent: number): Promise<ResponseDTO> {
+        const newData = this.formatterEvent(event, idEvent);
+        return this._eventsApi.updateEvent(newData);
+    }
+    async getCategoriesEvent() {
+        return this._eventsApi.getCategoriesEvent();
+    }
+
+    addEventImage(eventId: number, image: File): Promise<ResponseDTO> {
+        return this._eventsApi.addEventImage(eventId, image);
+    }
+    getEventImage(eventId: number): Promise<ResponseDTO> {
+        return this._eventsApi.getEventImage(eventId);
+    }
+    deleteFile(data: EventFileDTO): Promise<ResponseDTO> {
+        return this._eventsApi.deleteFile(data);
+    }
+    formatterEvent(event: EventsForm, idEvent?: number): Events {
+        return  {
+            idEvent: idEvent,
             name: event.name,
             detail: event.detail,
             date: event.date,
@@ -37,10 +62,5 @@ export class EventsApplication {
                 idMeasure: Number(sponsor.measure.id),
             })),
         }
-        console.log(newData);
-        return this._eventsApi.addEvent(newData);
-    }
-    async getCategoriesEvent() {
-        return this._eventsApi.getCategoriesEvent();
     }
 }

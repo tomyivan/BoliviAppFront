@@ -10,14 +10,15 @@ export const EventsPage = () => {
     const navigation = useNavigate()
     const { getEvents } = useGetEvents();
     const [ dataEvents , setDataEvents ] = useState<EventSimpleDTO[]>([]);
+    const [ eventSelected, setEventSelected ] = useState<CalendarEvent | null>(null);
     const [ openModal, setOpenModal ] = useState(false);
     const loadEvents = async () => {
         const response = await getEvents( 1, {} as EventFilters ) ; 
-        console.log(response)
         setDataEvents(response)
     }
     const handleEvent = (event: CalendarEvent) => {
         setOpenModal(true)
+        setEventSelected(event)
     }
 
     useEffect(() => {
@@ -31,7 +32,9 @@ export const EventsPage = () => {
                 title="OPCIONES EVENTOS "
             >
                 <div className="flex flex-col gap-2">
-                    <EventsOptions />
+                    <EventsOptions 
+                        idEvent={eventSelected?.idEvent || 0}
+                    />
                 </div>
             </Modal>
             <div className="flex justify-end md:flex-row rounded-2xl flex-col gap-2 items-center bg-gray-50 shadow-lg px-4 dark:bg-gray-700 dark:text-gray-200">                      
