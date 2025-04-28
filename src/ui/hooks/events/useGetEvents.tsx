@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { EventsApp } from "../../../dependences/Events.dependences"
-import { DataSelect, EventFileDTO, EventFilters, Events, EventSimpleDTO } from "../../../domain";
+import { DataSelect, EventFileDTO, EventFilters, EventInfo, Events, EventSimpleDTO } from "../../../domain";
 
 export const useGetEvents = () => { 
     const getEvent = async ( idEvent: number ): Promise<Events> => {
@@ -56,5 +56,18 @@ export const useGetEvents = () => {
             return [];
         }
     }
-    return { getEvent, getCategoriesEvent, getEvents, getEventImage };
+    const getEventInfo = async (idEvent: number): Promise<EventInfo> => {
+        try {
+            const response = await EventsApp.getEventInfo(idEvent);
+            if (!response || !response.ok) {
+                toast.error(response?.msg || "Error al obtener la información del evento");
+                return {} as EventInfo;
+            }
+            return response.body.data;
+        } catch (error) {
+            console.error("Error fetching event info:", error);
+            return {} as EventInfo;
+        }
+    }
+    return { getEvent, getCategoriesEvent, getEvents, getEventImage, getEventInfo };
 }

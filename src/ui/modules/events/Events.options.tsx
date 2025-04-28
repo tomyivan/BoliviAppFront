@@ -14,7 +14,7 @@ export const EventsOptions:React.FC<EventsProps> = ({
         }else if(type === 2){
             navigate(`galeria/${idEvent}`)
         }else if(type === 3){
-            navigate(`detalle/${idEvent}`)
+            navigate(`info/${idEvent}`)
         }
     }
     return (

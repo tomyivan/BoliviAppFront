@@ -5,7 +5,8 @@ import { AuthPage,
         EventsPage,
         HomePage,
         GaleryPage,
-        EventsEditPage
+        EventsEditPage,
+        EventInfoPage
  } from "../pages";
  import { Layout } from "../Layout/Main.layout";
  const prevAuth = ( urlParams: URLSearchParams ) => {
@@ -51,6 +52,9 @@ export const router =   createBrowserRouter([
             },{
                 path: "eventos/editar/:id",
                 element: <EventsEditPage />,
+            },{
+                path: "eventos/info/:id",
+                element: <EventInfoPage />,
             }
         ]
     }

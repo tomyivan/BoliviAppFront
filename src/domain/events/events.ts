@@ -1,5 +1,27 @@
+import { Sponsor } from "..";
 import { Departaments } from "../departaments/departaments";
 import { DataSelect } from "../input/input";
+
+export interface EventInfo {
+    idEvent:   number;
+    date:      string;
+    startTime: string;
+    endTime:   string;
+    name:      string;
+    detail:    string;
+    category:  string;
+    location:  LocationInfo;
+    sponsors:  Sponsor[];
+}
+
+export interface LocationInfo {
+    idLocation: number;
+    location:   string;
+    latitude:   number;
+    longitude:  number;
+    department: string;
+}
+
 
 export interface EventFilters {
     date?: string;

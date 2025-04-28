@@ -64,4 +64,11 @@ export class EventsApiAdapter implements IEventsDomain {
         });
         return this._http.delete(`${this._baseUrl}/api/v1/events/file/drop`, { eventFile: data });
     }
+    async getEventInfo(idEvent: number): Promise<ResponseDTO> {
+        this._http.setHeader({
+            "Content-Type": "application/json",
+            "x-token": localStorage.getItem("token") || "",
+        });
+        return this._http.get(`${this._baseUrl}/api/v1/events/info/${idEvent}`);
+    }
 }

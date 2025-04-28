@@ -5,3 +5,4 @@ export { EventsPage } from "./events/Events.page";
 export { EventsAddPage } from "./events/EventsAdd.page";
 export { GaleryPage } from "./events/Galery.page";
 export { EventsEditPage } from "./events/EventsEdit.page";
+export { EventInfoPage } from "./events/EventInfo.page";
