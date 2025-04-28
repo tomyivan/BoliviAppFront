@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import gsap from "gsap";
-// import { mockEvents } from "../../../content/Calendar.content";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Days } from "./Days.component";
 import { Month } from "./Month.component";
 import { DayDetail } from "./DayDetail.components";
@@ -51,13 +50,15 @@ export const Calendar:React.FC<CalendarProps> = ({
         }
     };
 
-    const getEventsForDay = (day: dayjs.Dayjs) =>        
-        data.filter((e) => dayjs(e.date).isSame(day, "day"));
+    const getEventsForDay = (day: dayjs.Dayjs) => data.filter((e) => dayjs(e.date).utc().isSame(day, "day"));
 
     const handleDay = (day: dayjs.Dayjs) => {
         const events = getEventsForDay(day);
         setDayDetail(events);   
     }
+    useEffect(() => {
+        setDayDetail([]);
+    },[data]);
     return (
         <div className="flex h-full mx-auto p-4 text-gray-700 bg-gray-50 shadow-lg rounded-lg w-full dark:bg-gray-700 dark:text-gray-200">
             <DayDetail
@@ -89,10 +90,8 @@ export const Calendar:React.FC<CalendarProps> = ({
                         <div key={index} className={dayClasses} onClick={() => handleDay(day)}>
                             <div className="text-right font-semibold">
                                 <span className={todayClasses}>{day.date()}</span>
-                            </div>
-                            
+                            </div>                            
                             { events?.length > 0 && <div className="space-y-1 mt-1">
-
                                     <div                                        
                                         className={`text-white text-xs px-1 rounded ${colors[index % colors.length]}`}
                                     >

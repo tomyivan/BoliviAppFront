@@ -2,16 +2,26 @@ import { PlusCircle } from "lucide-react"
 import { Search, Calendar, Modal } from "../../components"
 import { Button } from "../../shared"
 import { useNavigate } from "react-router-dom"
-import { useGetEvents } from "../../hooks"
+import { useGetEvents, useDeleteEvents } from "../../hooks"
 import { useEffect, useState } from "react"
 import { CalendarEvent, EventFilters, EventSimpleDTO } from "../../../domain"
 import { EventsOptions } from "../../modules"
 export const EventsPage = () => {
     const navigation = useNavigate()
     const { getEvents } = useGetEvents();
+    const { deleteEvent } = useDeleteEvents();
     const [ dataEvents , setDataEvents ] = useState<EventSimpleDTO[]>([]);
     const [ eventSelected, setEventSelected ] = useState<CalendarEvent | null>(null);
     const [ openModal, setOpenModal ] = useState(false);
+    const handleDelete = async (idEvent: number) => {
+        if( confirm("¿Estas seguro de eliminar el evento?") ){
+            const response = await deleteEvent(idEvent);
+            if( response ){
+                setOpenModal(false)
+                loadEvents()
+            }
+        }
+    }
     const loadEvents = async () => {
         const response = await getEvents( 1, {} as EventFilters ) ; 
         setDataEvents(response)
@@ -34,6 +44,7 @@ export const EventsPage = () => {
                 <div className="flex flex-col gap-2">
                     <EventsOptions 
                         idEvent={eventSelected?.idEvent || 0}
+                        handleDelete={handleDelete}
                     />
                 </div>
             </Modal>

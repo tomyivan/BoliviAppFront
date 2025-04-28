@@ -28,6 +28,7 @@ export const Input=< T extends FieldValues >  ({
     className,
     onChange
 }: InputProps< T >) => {
+    const registerProps = register ? register(name as any, options as any) : { onChange: undefined };
     return (
         <div className="w-full">
             {
@@ -44,7 +45,10 @@ export const Input=< T extends FieldValues >  ({
                 disabled = {disabled}
                 {...(register ? register(name as any, options as any) : {})}
                 autoComplete="off"                
-                onChange={ onChange && ((e) => onChange(e.target as HTMLInputElement))}
+                onChange={(e) => {
+                    registerProps.onChange && registerProps.onChange(e); // primero llama al onChange de register (muy importante)
+                    onChange && onChange(e.target as HTMLInputElement);   // luego llama a tu propio onChange si existe
+                }}
             />       
             {   errors?.isValid && <small className="text-red-600 font-semibold">{ !errors?.message || errors?.message === ''? `Este campo es requerido` : errors?.message}</small>}
         </div>

@@ -66,4 +66,9 @@ export class EventsApplication {
     getEventInfo(idEvent: number): Promise<ResponseDTO> {
         return this._eventsApi.getEventInfo(idEvent);
     }
+
+    deleteEvent(idEvent: number): Promise<ResponseDTO> {
+        return this._eventsApi.deleteEvent(idEvent);
+    }
+
 }

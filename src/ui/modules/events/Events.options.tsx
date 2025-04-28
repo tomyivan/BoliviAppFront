@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom"
 import { Pen, Trash, BookImage, Info } from "lucide-react";
 interface EventsProps {
     idEvent: number;
+    handleDelete: (idEvent: number) => void;   
 }
 export const EventsOptions:React.FC<EventsProps> = ({
-    idEvent
+    idEvent,
+    handleDelete
 }) => {
     const navigate = useNavigate();
     const classli = "shadow-2xl bg-blue-200 p-2 rounded-lg cursor-pointer hover:scale-105 transition-transform flex items-center gap-2"
@@ -15,8 +17,11 @@ export const EventsOptions:React.FC<EventsProps> = ({
             navigate(`galeria/${idEvent}`)
         }else if(type === 3){
             navigate(`info/${idEvent}`)
+        }else if(type === 4){
+            handleDelete(idEvent)
         }
     }
+    
     return (
         <ul className="p-2 flex flex-col gap-2 animate-fade-in font-semibold text-gray-600">
             <li 
@@ -34,7 +39,9 @@ export const EventsOptions:React.FC<EventsProps> = ({
                 Informacion</li>            
             <li 
                 onClick={() => handleOption(4)}
-            className={`shadow-2xl bg-red-200 p-2 rounded-lg cursor-pointer hover:scale-105 transition-transform flex items-center gap-2`}>
+            className={`shadow-2xl bg-red-200 p-2 rounded-lg cursor-pointer hover:scale-105 transition-transform flex items-center gap-2`}
+                
+            >
                 <Trash size={20}/>
                 Borrar</li>
         </ul>

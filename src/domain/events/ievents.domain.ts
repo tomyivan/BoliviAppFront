@@ -11,4 +11,5 @@ export interface IEventsDomain {
     deleteFile: (data: EventFileDTO) => Promise<ResponseDTO>;
     updateEvent: (event: Events) => Promise<ResponseDTO>;
     getEventInfo: (idEvent: number) => Promise<ResponseDTO>;
+    deleteEvent: (idEvent: number) => Promise<ResponseDTO>;
 }

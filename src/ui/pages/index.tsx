@@ -6,3 +6,4 @@ export { EventsAddPage } from "./events/EventsAdd.page";
 export { GaleryPage } from "./events/Galery.page";
 export { EventsEditPage } from "./events/EventsEdit.page";
 export { EventInfoPage } from "./events/EventInfo.page";
+export { PresidentPage } from "./president/President.page";

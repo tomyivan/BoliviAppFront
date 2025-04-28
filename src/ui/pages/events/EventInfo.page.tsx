@@ -38,9 +38,9 @@ export const EventInfoPage = () => {
                     </div>
                     <div className="flex items-center gap-2">
                         <span className="font-semibold text-gray-900 dark:text-gray-100">Lugar:</span>
-                        <span className="text-gray-700 dark:text-gray-300">{eventData.location?.location}</span>
+                        <span className="text-gray-700 dark:text-gray-300">{eventData?.location?.location}</span>
                     </div>
-                    { (eventData.location.latitude && eventData.location.longitude) && <div className="flex items-center gap-2">
+                    { (eventData?.location?.latitude && eventData?.location?.longitude) && <div className="flex items-center gap-2">
                         <span className="font-semibold text-gray-900 dark:text-gray-100">Locacion:</span>
                         <a 
                             href={`https://www.google.com/maps?q=${eventData.location.latitude},${eventData.location.longitude}`} 
@@ -70,7 +70,9 @@ export const EventInfoPage = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                 {eventFile.map((file) => (
-                    <div key={file.idFile} className="relative group bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+                    <div key={file.idFile} className="relative group bg-white rounded-lg shadow-md overflow-hidden flex flex-col cursor-pointer"
+                        onClick={() => window.open(`${baseUrl}/uploads/events/${file.name}`, "_blank")}
+                    >
                         <div className="flex-1 flex justify-center items-center overflow-hidden bg-gray-200 dark:bg-gray-700 dark:text-gray-200"> 
                             <img
                                 src={`${baseUrl}/uploads/events/${file.name}`}

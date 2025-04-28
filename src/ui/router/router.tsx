@@ -6,7 +6,8 @@ import { AuthPage,
         HomePage,
         GaleryPage,
         EventsEditPage,
-        EventInfoPage
+        EventInfoPage,
+        PresidentPage
  } from "../pages";
  import { Layout } from "../Layout/Main.layout";
  const prevAuth = ( urlParams: URLSearchParams ) => {
@@ -55,6 +56,9 @@ export const router =   createBrowserRouter([
             },{
                 path: "eventos/info/:id",
                 element: <EventInfoPage />,
+            },{
+                path: "presidentes",
+                element: <PresidentPage />,
             }
         ]
     }

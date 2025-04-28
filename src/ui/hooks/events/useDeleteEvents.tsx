@@ -17,5 +17,22 @@ export const useDeleteEvents = () => {
             return false
         }
     }
-    return { deleteEventFile }
+
+    const deleteEvent = async (idEvent: number):Promise<Boolean> => {
+        try {
+            const response = await EventsApp.deleteEvent(idEvent);
+            if ( !response || !response.ok ){
+                toast.error(response.msg || "Error al eliminar el evento");
+                return false
+            }     
+            toast.success(response.msg);
+            return true
+        } catch (error) {
+            console.error(error);
+            toast.error("Error al eliminar el evento");
+            return false
+        }
+    }
+
+    return { deleteEventFile, deleteEvent }
 }

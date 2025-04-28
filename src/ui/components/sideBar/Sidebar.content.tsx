@@ -1,4 +1,4 @@
-import {  Box, CalendarDays, FormInput, History, Home } from "lucide-react"
+import {  Box, CalendarDays, FormInput, History, Home, User } from "lucide-react"
 import { SideBarList } from "../../../domain"
 import dayjs from "dayjs"
  const date =  {
@@ -16,11 +16,18 @@ export const SideBarContent= ():SideBarList[]  => [
         icon: <CalendarDays />,
         link: '/inicio/eventos',
         // query: `?de=${date.start.format('YYYY-MM-DD')}&hasta=${date.end.format('YYYY-MM-DD')}`,
-    },{
+    },
+    {
         title: 'Historias',
         icon: <History />,
         link: '/historias',
-    },    {
+    },    
+    {
+        title: 'Presidentes',
+        icon: <User />,
+        link: '/inicio/presidentes',
+    },    
+    {
         title: 'Dependencias',
         icon: <Box />,
         subItems: [
