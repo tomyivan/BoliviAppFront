@@ -6,3 +6,4 @@ export { SponsorApiAdapter } from "./adapter/sponsorApi.adapter";
 export { ResourceApiAdapter } from "./adapter/resourceApi.adapter";
 export { EventsApiAdapter } from "./adapter/eventsApi.adapter";
 export { PresidentApiAdapter } from "./adapter/presidentApi.adapter";
+export { PoliticalPartyApiAdapter } from "./adapter/politicalPartyApi.adapter";

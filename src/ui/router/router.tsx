@@ -7,7 +7,9 @@ import { AuthPage,
         GaleryPage,
         EventsEditPage,
         EventInfoPage,
-        PresidentPage
+        PresidentPage,
+        PresidentAddPage,
+        PresidentEditPage
  } from "../pages";
  import { Layout } from "../Layout/Main.layout";
  const prevAuth = ( urlParams: URLSearchParams ) => {
@@ -59,6 +61,15 @@ export const router =   createBrowserRouter([
             },{
                 path: "presidentes",
                 element: <PresidentPage />,
+            },{
+                path: "presidentes/nuevo",
+                element: <PresidentAddPage />,
+            },{
+                path: "presidentes/editar/:id",
+                element: <PresidentEditPage />,
+            },{
+                path: "presidentes/galeria/:id",
+                element: <GaleryPage />,
             }
         ]
     }

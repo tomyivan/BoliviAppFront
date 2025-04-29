@@ -1,11 +1,21 @@
 import { useEffect } from "react";
-import { Input } from "../../shared";
 
 import { useSearchStore } from "../../store";
 import { memo } from "react";
-export const Search = memo(() => {
+interface SearchProps {
+    variant?: string;
+    className?: string;
+    placeholder?: string;    
+}
+export const Search:React.FC<SearchProps> = memo((
+    {
+        variant = 'inp-filled',
+        className = '',
+        placeholder = 'Buscar...',
+    }
+) => {
     const url = new URL(window.location.href);
-    const { addSearch, eraserSearch} = useSearchStore(state => state);    
+    const { addSearch, eraserSearch, search} = useSearchStore(state => state);    
     const handleSearch = (e: HTMLInputElement) => {
         const search = e.value;
         addSearch(search);
@@ -20,13 +30,14 @@ export const Search = memo(() => {
     }, [])
     return (
         <div className="w-full md:w-1/5 m-4">
-            <Input
-                name="search"
-                placeholder="Buscar..."
-                variant="inp-normal"
-                className="py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 "
-                onChange={handleSearch}
-            />            
+              <input 
+                type={'text'}
+                className={`${variant} w-full ${ className }`}
+                placeholder={placeholder}
+                autoComplete="off"                
+                onChange={(e) => handleSearch(e.target as HTMLInputElement)}
+                value={search}
+            />           
         </div>
     )
 })

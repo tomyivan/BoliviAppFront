@@ -1,18 +1,62 @@
 import { Form } from "../../components"
-import { PresidentForm } from "../../../domain"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { Input } from "../../shared"
+import { DataSelect, PresidentDTO, PresidentForm } from "../../../domain"
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
+import { Input, InputSelect2 } from "../../shared"
+import { useGetPoliticalParty, useAddPresident, useUpdatePresident } from "../../hooks"
+import { MandateForm } from "./Mandates.form"
+import { useEffect, useState } from "react"
+import dayjs from "dayjs"
+
 interface FormPresidentProps {
     onCancel?: () => void;  
+    data?: PresidentDTO
 }
 export const FormPresident:React.FC<FormPresidentProps> = ({
-    onCancel
+    onCancel,
+    data
 }) => {
-    const { register, formState: { errors }, handleSubmit, reset } = useForm<PresidentForm>();
-    const onSubmit:SubmitHandler<PresidentForm> = async (formData) => { 
-        console.log(formData)
+     const method = useForm<PresidentForm>();
+    const { register, formState: { errors }, handleSubmit, control } = method;
+    const { addPresident } = useAddPresident();
+    const { updatePresident } = useUpdatePresident();
+    const { getPoliticalParties } = useGetPoliticalParty();
+    const [ politicalData, setPoliticalData ] = useState<DataSelect[]>([]);
+    const loadDependencies = async () => {
+        const [ politicaParties ] = await Promise.all([
+            getPoliticalParties()
+        ])
+        setPoliticalData(politicaParties as DataSelect[]);        
     }
+
+    const onSubmit:SubmitHandler<PresidentForm> = async (formData) => { 
+        let response = false;        
+        response = data?.idPresident ? await updatePresident(formData, data?.idPresident) : await addPresident(formData) ;
+        if(response) {
+            onCancel && onCancel();
+        }
+    }
+    useEffect(() => {
+        if(data) {
+            method.reset({
+                ...data,
+                dateBirthday: data.dateBirthday ? new Date(data.dateBirthday).toISOString().split('T')[0] : undefined,
+                dateDeath: data.dateDeath ? new Date(data.dateDeath).toISOString().split('T')[0] : undefined,
+                politicalParty: { id: data.idPoliticalParty, name: data.politicalParty },
+                lastName: data.lastname,
+                mandates: data.mandates?.map((mandate) => ({
+                    nroMandate: mandate.nroMandate,
+                    startDate: mandate.startDate ? dayjs(mandate.startDate).utc().format("YYYY-MM-DD"): undefined,
+                    endDate: mandate.endDate ? dayjs(mandate.endDate).utc().format("YYYY-MM-DD"): undefined,
+                    observation: mandate.observation
+                }))   
+            })
+        }
+    }, [data])
+    useEffect(() => {   
+        loadDependencies()
+    } , [])
     return (
+        <FormProvider {...method} >
         <Form 
             onSubmit={handleSubmit(onSubmit)}
             onCancel={onCancel}
@@ -58,13 +102,14 @@ export const FormPresident:React.FC<FormPresidentProps> = ({
                 />
             </div>
             <div className="form-row">
-                <Input 
-                    register={register}
+                <InputSelect2 
+                    control={control}
                     label="Partido Politico"
                     name="politicalParty"
                     options={{ required: true }}
                     errors={errors.politicalParty && { isValid: true, message: "Este campo es requerido" }}
-                    placeholder="Partido politico del presidente"
+                    data={politicalData}
+                    placeholder="Seleccione el partido politico"
                     variant="inp-filled"
                 />
             </div>
@@ -76,7 +121,7 @@ export const FormPresident:React.FC<FormPresidentProps> = ({
                     <textarea
                         className={`inp-filled w-full h-32 p-2 ${errors && errors?.biography && 'border-red-500'}`}
                         rows={4}
-                        placeholder="Descripción del evento"
+                        placeholder="Una breve biografia del presidente"
                         {...register('biography', { required: true })}
                     ></textarea>
                     {errors.biography && <span className="text-red-500">Este campo es requerido</span>}                
@@ -95,6 +140,10 @@ export const FormPresident:React.FC<FormPresidentProps> = ({
                     {errors.importantEvents && <span className="text-red-500">Este campo es requerido</span>}
                 </div>
             </div>
+            <MandateForm 
+                
+            />
         </Form>
+        </FormProvider>
     )
 }

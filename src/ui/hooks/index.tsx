@@ -8,3 +8,7 @@ export { useGetEvents } from "./events/useGetEvents";
 export { useAddEvents } from "./events/useAddEvents";
 export { useDeleteEvents } from "./events/useDeleteEvents";
 export { useEditEvents } from "./events/useEditEvents";
+export { useGetPoliticalParty } from "./politicalParty/useGetPoliticalParty";
+export { useGetPresident } from "./president/useGetPresident";
+export { useAddPresident } from "./president/useAddPresident";
+export { useUpdatePresident } from "./president/useUpdatePresident";

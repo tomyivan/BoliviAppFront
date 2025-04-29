@@ -5,3 +5,5 @@ export { MiscellaneousApplication } from "./miscellaneous/Miscellaneous.applicat
 export { SponsorApplication } from "./sponsor/sponsor.application";
 export { ResourceApplication } from "./resource/resource.application";
 export { EventsApplication } from "./events/events.application";
+export { PoliticalPartyApplication } from "./politicalParty/politicalParty.application";
+export { PresidentApplication } from "./president/president.application";

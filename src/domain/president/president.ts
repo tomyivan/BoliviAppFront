@@ -1,5 +1,10 @@
 import { DataSelect } from "../input/input";
 
+export interface PresidentFilter {
+    idPresident?: number;
+    idPoliticalParty?: number;    
+}
+
 export interface PresidentForm {
     biography: string;
     name: string;   
@@ -8,18 +13,34 @@ export interface PresidentForm {
     dateBirthday: string;
     dateDeath: string;
     importantEvents: string;
+    mandates?: MandateForm[];
 }
 
 export interface President {
     idPresident?: number;
     biography: string;
     name: string;   
-    lastName: string;   
-    politicalParty: string;
+    lastname: string;   
+    idPoliticalParty?: number;
+    politicalParty?: string;
     dateBirthday: string;
     dateDeath: string;
     importantEvents: string;
+    mandates?: Mandate[];
+}
 
+export interface PresidentDTO {
+    idPresident: number;
+    biography: string;
+    name: string;   
+    lastname: string;   
+    idPoliticalParty: number;
+    politicalParty: string;    
+    dateBirthday?: string;
+    dateDeath?: string;
+    importantEvents?: string;
+    mandates?: Mandate[];
+    images?: PresidentImage[];
 }
 
 export interface PresidentImage {
