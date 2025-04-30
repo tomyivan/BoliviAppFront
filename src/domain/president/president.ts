@@ -25,6 +25,7 @@ export interface President {
     politicalParty?: string;
     dateBirthday: string;
     dateDeath: string;
+    picture?: string;
     importantEvents: string;
     mandates?: Mandate[];
 }
@@ -39,6 +40,7 @@ export interface PresidentDTO {
     dateBirthday?: string;
     dateDeath?: string;
     importantEvents?: string;
+    picture?: string;
     mandates?: Mandate[];
     images?: PresidentImage[];
 }
@@ -47,7 +49,7 @@ export interface PresidentImage {
     idFile?: number;
     idPresident: number;
     name: string;
-    isFrontPage: boolean;
+    isFrontPage: 1 | 0;
 }
 
 export interface MandateForm {

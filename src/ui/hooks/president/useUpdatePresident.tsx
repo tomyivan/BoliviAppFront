@@ -18,6 +18,21 @@ export const useUpdatePresident = () => {
             return false;
         }
     };
-
-    return { updatePresident };
+    const isFrontPage = async (idFile: number, idPresident:number): Promise<boolean> => {   
+        try {
+            const response = await PresidentApp.isFrontPage(idFile, idPresident);
+            if (!response || !response.ok) {
+                console.error("Error updating president image:", response?.msg);
+                toast.error(response?.msg || "Error al volver portada la imagen del presidente");
+                return false;
+            }
+            toast.success("La imagen del presidente se ha vuelto la portada");
+            return true;
+        } catch (error) {
+            console.error("Error updating president image:", error);
+            toast.error("Error al volver portada la imagen del presidente");
+            return false;
+        }
+    }
+    return { updatePresident, isFrontPage };
 }

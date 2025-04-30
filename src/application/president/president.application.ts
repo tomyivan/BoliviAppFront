@@ -19,7 +19,9 @@ export class PresidentApplication {
         const presidentFormated = this.formatterPresident(president, idPresident);
         return this._president.updatePresident(presidentFormated);
     }
-
+    deletePresidente(idPresident: number) {
+        return this._president.deletePresidente(idPresident);
+    }
     getPresidentById(idPresident: number) {
         return this._president.getPresidentById(idPresident);
     }
@@ -27,8 +29,14 @@ export class PresidentApplication {
     addPresidentImage(idPresident: number, image: File) {
         return this._president.addPresidentImage(idPresident, image);
     }
+    deletePresidentImage(idFile: number) {
+        return this._president.deletePresidentImage(idFile);
+    }
     addMandate(mandate: any) {
         return this._president.addMandate(mandate);
+    }
+    isFrontPage(idFile: number, idPresident:number) {
+        return this._president.isFrontPage(idFile, idPresident);
     }
     formatterPresident(president: PresidentForm, idPresident?:number):President {
         return {

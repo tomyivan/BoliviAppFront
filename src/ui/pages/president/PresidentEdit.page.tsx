@@ -10,7 +10,6 @@ export const PresidentEditPage = () => {
     const loadData = async () => {
         if (!id) return ;
         const response = await getPresidentById(Number(id));
-        console.log(response);
         setPresident(response);
     }
     useEffect(() => {

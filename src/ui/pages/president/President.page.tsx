@@ -3,7 +3,7 @@ import { Search, Modal } from "../../components"
 import { Button } from "../../shared"
 import { useEffect, useState } from "react"
 import { PresidentOptions } from "../../modules"
-import {  useGetPresident } from "../../hooks"
+import {  useGetPresident, useDeletePresident } from "../../hooks"
 import {  President } from "../../../domain"
 import { useNavigate } from "react-router-dom"
 import { useSearchStore } from "../../store"
@@ -14,6 +14,7 @@ export const PresidentPage = () => {
     const [ presidents, setPresidents ] = useState<President[]>([]);
     const [ idPresident, setIdPresident ] = useState<number>(0);
     const [ filterPresident, setFilterPresident ] = useState<President[]>([]);
+    const { deletePresident } = useDeletePresident();
     const { getPresidents } = useGetPresident();
     const baseUrl = import.meta.env.VITE_BASEURL;
     const loadPresidents = async () => {
@@ -23,6 +24,13 @@ export const PresidentPage = () => {
     const handlePresident = (president: President) => { 
         setOpenModal(true)
         setIdPresident(Number(president.idPresident))
+    }
+    const handleDelete = async () => {  
+        if (idPresident === 0 || !confirm("¿Estas seguro de eliminar el presidente?")) return;
+        const response = await deletePresident(idPresident);
+        if( !response ) return;
+        loadPresidents();
+        setOpenModal(false)
     }
     useEffect(() => {
         if( search ){
@@ -49,7 +57,7 @@ export const PresidentPage = () => {
                 <div className="flex flex-col gap-2">
                     <PresidentOptions 
                         idPresident={idPresident}
-                        handleDelete={() => {}}
+                        handleDelete={handleDelete}
                     />
                 </div>
             </Modal>
@@ -75,7 +83,7 @@ export const PresidentPage = () => {
                     >
                         <div className="flex-1 flex justify-center items-center overflow-hidden bg-gray-200 dark:bg-gray-700 dark:text-gray-200"> 
                             <img
-                                src={`${baseUrl}/uploads/events/${president.name}`}
+                                src={`${baseUrl}/uploads/presidents/${president.picture}`}
                                 alt={`${president.name} ${president?.lastname}`} 
                                 className="h-48 object-cover"
                             />

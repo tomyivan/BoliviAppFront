@@ -12,3 +12,4 @@ export { useGetPoliticalParty } from "./politicalParty/useGetPoliticalParty";
 export { useGetPresident } from "./president/useGetPresident";
 export { useAddPresident } from "./president/useAddPresident";
 export { useUpdatePresident } from "./president/useUpdatePresident";
+export { useDeletePresident } from "./president/useDeletePresident";

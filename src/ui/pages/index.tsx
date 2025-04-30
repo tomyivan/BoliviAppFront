@@ -10,3 +10,4 @@ export { PresidentPage } from "./president/President.page";
 export { PresidentAddPage } from "./president/PresidentAdd.page";
 export { PresidentEditPage } from "./president/PresidentEdit.page";
 export { PresidentGaleryPage } from "./president/Galery.page";
+export { PresidentInfoPage } from "./president/PresidentInfo.page";

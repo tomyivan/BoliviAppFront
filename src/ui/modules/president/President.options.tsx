@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { Pen, Trash, BookImage, Info } from "lucide-react";
 interface EventsProps {
     idPresident: number;
-    handleDelete: (idEvent: number) => void;   
+    handleDelete: (idPresident: number) => void;   
 }
 export const PresidentOptions:React.FC<EventsProps> = ({
     idPresident,
@@ -16,7 +16,7 @@ export const PresidentOptions:React.FC<EventsProps> = ({
         }else if(type === 2){
             navigate(`galeria/${idPresident}`)
         }else if(type === 3){
-            navigate(`info/${idPresident}`)
+            navigate(`informacion/${idPresident}`)
         }else if(type === 4){
             handleDelete(idPresident)
         }
