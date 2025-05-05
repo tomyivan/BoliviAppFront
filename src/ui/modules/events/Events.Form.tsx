@@ -33,7 +33,6 @@ export const FormEvents:React.FC<FormEventsProps>  = ({
     const { addEvents } = useAddEvents();
     const { editEvents } = useEditEvents();
     const onSubmit:SubmitHandler<EventsForm> = async (formData) => {
-        console.log(formData)
         if(formData.resources.length === 0) {
             toast.error("Debe agregar al menos un recurso");
             return;

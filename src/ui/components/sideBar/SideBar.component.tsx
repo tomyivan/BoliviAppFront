@@ -12,7 +12,7 @@ export const SideBar: React.FC<SideBarProps> = () => {
     }
     return (
         <div className={`sidebar__container ${ collapse ? 'w-[90px]' : 'w-[240px]'} `}>
-            <Header title="Template" 
+            <Header title="BoliviApp" 
                 handleCollapse={handleCollapse} 
                 isCollapsed={collapse}
             />

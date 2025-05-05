@@ -7,3 +7,6 @@ export { ResourceApiAdapter } from "./adapter/resourceApi.adapter";
 export { EventsApiAdapter } from "./adapter/eventsApi.adapter";
 export { PresidentApiAdapter } from "./adapter/presidentApi.adapter";
 export { PoliticalPartyApiAdapter } from "./adapter/politicalPartyApi.adapter";
+export { HistoryApiAdapter } from "./adapter/historyApi.adapter";
+export { CharacterApiAdapter } from "./adapter/characterApi.adapter";
+export { IAApiAdapter } from "./adapter/iaApi.adapter";

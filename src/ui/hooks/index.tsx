@@ -13,3 +13,7 @@ export { useGetPresident } from "./president/useGetPresident";
 export { useAddPresident } from "./president/useAddPresident";
 export { useUpdatePresident } from "./president/useUpdatePresident";
 export { useDeletePresident } from "./president/useDeletePresident";
+export { useGetHistory } from "./history/useGetHistory";
+export { useGetCharacter } from "./character/useGetCharacter";
+export { useAddHistory } from "./history/useAddHistotory";
+export { useAddIA } from "./ia/useAddIA";

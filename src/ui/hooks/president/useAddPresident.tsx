@@ -21,6 +21,7 @@ export const useAddPresident = () => {
     const addPresidentImage = async (idPresident: number, image: File, fn: () => void): Promise<boolean> => {
         try {
             const response = await PresidentApp.addPresidentImage(idPresident, image);
+            console.log("response", response);
             if (!response || !response.ok) {
                 console.error("Error adding president image:", response?.msg);
                 toast.error(response?.msg || "Error al agregar la imagen del presidente");

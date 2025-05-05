@@ -2,13 +2,13 @@ import { toast } from "react-toastify";
 import { FormForgetPassword, FormLogin, FormSingUp, OptionsSingUp } from "../../modules"
 import { useState, useEffect } from "react";
 import { useCity } from "../../hooks";
-import { List } from "../../../domain";
+import { DataSelect } from "../../../domain";
 import { useAuthStore } from "../../store";
 import { useNavigate } from "react-router-dom";
 export const AuthPage = () => {
     const navigation = useNavigate();
     const [ singUp, setSingUp ] = useState<Number>(0);
-    const [ dataCity, setDataCity ] = useState<List[]>([]);
+    const [ dataCity, setDataCity ] = useState<DataSelect[]>([]);
     const { getCountries } = useCity();
     const { addAuth } = useAuthStore(); 
     const loadCity = async () => {

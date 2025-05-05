@@ -11,3 +11,5 @@ export { PresidentAddPage } from "./president/PresidentAdd.page";
 export { PresidentEditPage } from "./president/PresidentEdit.page";
 export { PresidentGaleryPage } from "./president/Galery.page";
 export { PresidentInfoPage } from "./president/PresidentInfo.page";
+export { HistoryPage } from "./history/History.page";
+export { HistoryAddPage } from "./history/HistoryAdd.page";

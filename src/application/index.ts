@@ -7,3 +7,6 @@ export { ResourceApplication } from "./resource/resource.application";
 export { EventsApplication } from "./events/events.application";
 export { PoliticalPartyApplication } from "./politicalParty/politicalParty.application";
 export { PresidentApplication } from "./president/president.application";
+export { HistoryApplication } from "./history/history.application";
+export { CharacterApplication } from "./character/character.application";
+export { IAApplication } from "./ia/ia.application";

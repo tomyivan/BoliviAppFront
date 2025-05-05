@@ -33,8 +33,7 @@ export const PresidentUploadImg: React.FC<EventUploadImgProps> = ({
         });
     };
     return (
-        <div className="flex flex-col w-full px-4 gap-4">
-            
+        <div className="flex flex-col w-full px-4 gap-4">            
             <div
                 onDrop={handleDrop}
                 onDragOver={e => e.preventDefault()}

@@ -7,3 +7,8 @@ export { EventsOptions } from "./events/Events.options";
 export { EventUploadImg } from "./events/Events.UploadImg";
 export { FormPresident } from "./president/President.Form";
 export { PresidentOptions } from "./president/President.options";
+export { HistoryTarget } from "./history/HistoryTarget.component";
+export { HistoryLineTime } from "./history/HistoryLineTime.component";
+export { FormHistory } from "./history/History.Form";
+export { HistoryReferences } from "./history/History.references";
+export { IAChat } from "./ia/IA.chat";

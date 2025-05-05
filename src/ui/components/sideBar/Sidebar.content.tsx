@@ -20,7 +20,7 @@ export const SideBarContent= ():SideBarList[]  => [
     {
         title: 'Historias',
         icon: <History />,
-        link: '/historias',
+        link: '/inicio/historias',
     },    
     {
         title: 'Presidentes',
